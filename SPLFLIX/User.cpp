@@ -12,7 +12,7 @@ vector<Watchable*> User::get_history() const {
 };
 
 bool User::already_watched(Watchable* w) const { //we check if the content was already watched by the user
-	for (int i = 0; i < get_history().size(); i++)
+	for (size_t i = 0; i < get_history().size(); i++)
 	{
 		if (get_history()[i]->get_id() == w->get_id())
 			return true;
@@ -22,13 +22,16 @@ bool User::already_watched(Watchable* w) const { //we check if the content was a
 
 LengthRecommenderUser::LengthRecommenderUser(const string& _name) : User(_name) {};
 
+LengthRecommenderUser::~LengthRecommenderUser
+
 void LengthRecommenderUser::addWatched(Watchable* w) {
-	history.push_back(w);
+	if (!already_watched(w))
+		history.push_back(w);
 };
 
 double LengthRecommenderUser::averageWatchtime() const { //calculate the average watchtime of the user
 	double totalLength = 0;
-	for (int i = 0; i < get_history().size(); i++)
+	for (size_t i = 0; i < get_history().size(); i++)
 	{
 		totalLength = totalLength + get_history()[i]->get_length();
 	}
@@ -46,7 +49,7 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 				d = std::abs(average - w->get_length());
 			}
 			else {
-				if (std::abs(average - s.get_content()[i].get_length() < d) { //check if we are closer to the required length. it is worth noting that only the first unwatched episode of a series is recommended, as they are inserted in order			
+				if (std::abs(average - s.get_content()[i].get_length() < d)) { //check if we are closer to the required length. it is worth noting that only the first unwatched episode of a series is recommended, as they are inserted in order			
 					w = (s.get_content()[i]);
 					d = std::abs(average - w->get_length());
 				}
@@ -59,7 +62,8 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), currentMovie(0) {};
 
 	void RerunRecommenderUser::addWatched(Watchable* w) {
-		history.push_back(w);
+		if (!already_watched(w))
+			history.push_back(w);
 	};
 
 	Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
@@ -72,47 +76,51 @@ RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), c
 		return w;
 	};
 
-	bool GenreRecommenderUser::genreSort(const tuple<int, string> a, const tuple<int, string> b) {
-		if (get<0>(a) == get<0>(b))
+void GenreRecommenderUser::addWatched(Watchable* w) {
+		if (!already_watched(w))
 		{
-			return (get<1>(a) < get<1>(b))); //compare lexicographicly
+			return;
 		}
-		else
-		{
-			return (get<0>(a) > get<0>(b));
-		}
-	};
-	void GenreRecommenderUser::addWatched(Watchable* w) {
 		history.push_back(w);
 		bool found;
-		for (int i = 0; i < w.get_tags().size(); i++)
+		for (size_t i = 0; i < w->get_tags().size(); i++)
 		{
 			found = false;
-			for (int j = 0; j < tagCounter.size(); j++)
-				if (get<1>(tagCounter[j]).compare(w.get_tags()[i]) == 0)
+			for (size_t j = 0; j < tagCounter.size(); j++)
+				if (get<1>(*tagCounter[j]).compare(w->get_tags()[i]) == 0)
 				{
-					get<0>(tagCounter[j]) += 1;
+					get<0>(*tagCounter[j]) += 1;
 					found = true;
-					j = INT_MAX;
+					j = tagCounter.size();
 				}
 			if (!found)
 			{
-				tagCounter.push_back(make_tuple<string, int>(1, w.get_tags()[i]));
+				tuple<int, string> *t = new tuple<int, string>(1, w->get_tags()[i]);
+				tagCounter.push_back(t);
 			}
 		}
-		sort(tagCounter.begin(), tagCounter.end(), genreSort);
+		sort(tagCounter.begin(), tagCounter.end(), &GenreRecommenderUser::genreSort);
 	};
+
+bool GenreRecommenderUser::genreSort(const tuple<int, string> a, const tuple<int, string> b) {
+	if (get<0>(a) == get<0>(b)) {
+		return (get<1>(a).compare(get<1>(b)) > 0);		//compare lexicographicly
+	}
+	else {
+		return (get<0>(a) > get<0>(b));					//compare by tags
+	}
+};
 
 	GenreRecommenderUser::GenreRecommenderUser(const std::string& _name) : User(_name), tagCounter(0) {};
 
 Watchable* GenreRecommenderUser::getRecommendation(Session& s) {
-	for (int i = 0; i < tagCounter.size(); i++)
+	for (size_t i = 0; i < tagCounter.size(); i++)
 	{
-		for (int j = 0; j < s.get_content().size(); j++)
+		for (size_t j = 0; j < s.get_content().size(); j++)
 		{
-			for (int k = 0; k < s.get_content()[i].get_tags()[k]; k++)
+			for (size_t k = 0; k < s.get_content()[i].get_tags()[k]; k++)
 			{
-				if ((get<1>(tagCounter[i]).compare(s.get_content()[j].get_tags[k]) == 0) && (!already_watched(s.get_content()[i])))
+				if ((get<1>(*tagCounter[i]).compare(s.get_content()[j].get_tags[k]) == 0) && (!already_watched(s.get_content()[i])))
 					return s.get_content()[j];
 			}
 		}
