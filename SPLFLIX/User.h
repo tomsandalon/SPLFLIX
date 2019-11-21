@@ -48,10 +48,9 @@ public:
 	GenreRecommenderUser(const std::string& name);
 	virtual Watchable* getRecommendation(Session& s);
 private:
-	void updateTagCounter();
-	Watchable* tryGetByTag(std::string tag) const;
-	std::vector<std::tuple<std::string, int>> tagCounter;
+	std::vector<std::tuple<int, std::string>> tagCounter;
 	virtual void addWatched(Watchable*);
+	bool genreSort(const std::tuple<int, std::string>, const std::tuple<int, std::string>);
 };
 
 #endif#pragma once
