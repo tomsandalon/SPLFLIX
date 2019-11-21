@@ -3,6 +3,30 @@ using namespace std;
 
 User::User(const string& _name) : name(_name), history(0) {} //user constructor
 
+User::~User() {
+	clear();
+}
+
+void User::clear() {
+	history.clear();
+	history.delete();
+	name.clear();
+	name.delete();
+	history = nullptr;
+	name = nullptr;
+}
+
+User::User(const User&& other) {
+	history.clear();
+	Watchable* w;
+	for (size_t i = 0; i < other.history.size(); i++)
+	{
+		w = &(other.history[i]);
+		history.push_back(w);
+	}
+	name = new string (other.name);
+}
+
 string User::getName() const {
 	return name;
 };

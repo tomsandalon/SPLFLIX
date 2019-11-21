@@ -28,6 +28,7 @@ protected:
 	std::vector<Watchable*> history;
 private:
 	const std::string name;
+	void clear();
 };
 
 
@@ -52,6 +53,7 @@ public:
 	virtual void addWatched(Watchable*);
 private:
 	int currentMovie;
+	void clear();
 };
 
 class GenreRecommenderUser : public User {
@@ -67,6 +69,7 @@ private:
 	std::vector<std::tuple<int, std::string>*> tagCounter;
 	virtual void addWatched(Watchable*);
 	bool genreSort(const std::tuple<int, std::string> a, const std::tuple<int, std::string> b);
+	void clear();
 };
 
 #endif
