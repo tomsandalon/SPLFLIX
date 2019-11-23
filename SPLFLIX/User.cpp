@@ -65,7 +65,7 @@ double LengthRecommenderUser::averageWatchtime() const { //calculate the average
 Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 	double d = -1;
 	double average = averageWatchtime();
-	Watchable *w;
+	Watchable *w = nullptr;
 	for (int i = 0; i < s.get_content().size(); i++) {
 		if (!already_watched(s.get_content()[i])) { //if this content wasn't already watched
 			if (d = -1) {//the first content not watched
@@ -73,7 +73,7 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 				d = std::abs(average - w->get_length());
 			}
 			else {
-				if (std::abs(average - s.get_content()[i].get_length() < d)) { //check if we are closer to the required length. it is worth noting that only the first unwatched episode of a series is recommended, as they are inserted in order			
+				if (std::abs(average - s.get_content()[i].get_length() < d)) { //check if we are closer to the required length. it is worth noting that only the first unwatched episode of a series is recommended, as they are inserted in order
 					w = (s.get_content()[i]);
 					d = std::abs(average - w->get_length());
 				}
@@ -151,4 +151,3 @@ Watchable* GenreRecommenderUser::getRecommendation(Session& s) {
 	}
 	return nullptr;
 };
-
