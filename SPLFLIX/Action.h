@@ -69,7 +69,7 @@ public:
 };
 
 
-class Watch : public BaseAction {
+class Watch : public BaseAction { //this is the only action to be inserted to the action log *before* activation, rather than after activation
 public:
 	virtual void act(Session& sess);
 	virtual void act(Session& sess, Watchable*);
