@@ -6,6 +6,11 @@
 #include <string>
 #include "Action.h"
 
+#include "json.hpp"
+
+using json = nlohmann::json;
+
+
 class User;
 class Watchable;
 
@@ -23,6 +28,7 @@ public:
 	void watchRecommendationFromAction(Watchable*); //new
 	std::vector<BaseAction*> getActionLog() const; //new
 private:
+	json getJsonData(const std::string& configFilePath);
 	std::vector<Watchable*> content;
 	std::vector<BaseAction*> actionsLog;
 	std::unordered_map<std::string, User*> userMap;
