@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>

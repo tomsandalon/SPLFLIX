@@ -3,30 +3,6 @@ using namespace std;
 
 User::User(const string& _name) : name(_name), history(0) {} //user constructor
 
-User::~User() {
-	clear();
-}
-
-void User::clear() {
-	history.clear();
-	history.delete();
-	name.clear();
-	name.delete();
-	history = nullptr;
-	name = nullptr;
-}
-
-User::User(const User&& other) {
-	history.clear();
-	Watchable* w;
-	for (size_t i = 0; i < other.history.size(); i++)
-	{
-		w = &(other.history[i]);
-		history.push_back(w);
-	}
-	name = new string (other.name);
-}
-
 string User::getName() const {
 	return name;
 };
@@ -46,8 +22,6 @@ bool User::already_watched(Watchable* w) const { //we check if the content was a
 
 LengthRecommenderUser::LengthRecommenderUser(const string& _name) : User(_name) {};
 
-LengthRecommenderUser::~LengthRecommenderUser
-
 void LengthRecommenderUser::addWatched(Watchable* w) {
 	if (!already_watched(w))
 		history.push_back(w);
@@ -65,7 +39,7 @@ double LengthRecommenderUser::averageWatchtime() const { //calculate the average
 Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 	double d = -1;
 	double average = averageWatchtime();
-	Watchable *w;
+	Watchable* w = nullptr;
 	for (int i = 0; i < s.get_content().size(); i++) {
 		if (!already_watched(s.get_content()[i])) { //if this content wasn't already watched
 			if (d = -1) {//the first content not watched
@@ -73,7 +47,7 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 				d = std::abs(average - w->get_length());
 			}
 			else {
-				if (std::abs(average - s.get_content()[i].get_length() < d)) { //check if we are closer to the required length. it is worth noting that only the first unwatched episode of a series is recommended, as they are inserted in order			
+				if (std::abs(average - s.get_content()[i].get_length() < d)) { //check if we are closer to the required length. it is worth noting that only the first unwatched episode of a series is recommended, as they are inserted in order
 					w = (s.get_content()[i]);
 					d = std::abs(average - w->get_length());
 				}
@@ -83,48 +57,52 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 	return w; //return the pointer of the content
 };
 
+string LengthRecommenderUser::algoType() const { return "len"; };
+
 RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), currentMovie(0) {};
 
-	void RerunRecommenderUser::addWatched(Watchable* w) {
-		if (!already_watched(w))
-			history.push_back(w);
-	};
+void RerunRecommenderUser::addWatched(Watchable* w) {
+	if (!already_watched(w))
+		history.push_back(w);
+};
 
-	Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
-		if (get_history().size() == 0)
-		{
-			return nullptr;
-		}
-		Watchable* w = (get_history()[currentMovie % get_history().size()]);
-		currentMovie++;
-		return w;
-	};
+Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
+	if (get_history().size() == 0)
+	{
+		return nullptr;
+	}
+	Watchable* w = (get_history()[currentMovie % get_history().size()]);
+	currentMovie++;
+	return w;
+};
+
+string RerunRecommenderUser::algoType() const { return "rer"; };
 
 void GenreRecommenderUser::addWatched(Watchable* w) {
-		if (!already_watched(w))
-		{
-			return;
-		}
-		history.push_back(w);
-		bool found;
-		for (size_t i = 0; i < w->get_tags().size(); i++)
-		{
-			found = false;
-			for (size_t j = 0; j < tagCounter.size(); j++)
-				if (get<1>(*tagCounter[j]).compare(w->get_tags()[i]) == 0)
-				{
-					get<0>(*tagCounter[j]) += 1;
-					found = true;
-					j = tagCounter.size();
-				}
-			if (!found)
+	if (!already_watched(w))
+	{
+		return;
+	}
+	history.push_back(w);
+	bool found;
+	for (size_t i = 0; i < w->get_tags().size(); i++)
+	{
+		found = false;
+		for (size_t j = 0; j < tagCounter.size(); j++)
+			if (get<1>(*tagCounter[j]).compare(w->get_tags()[i]) == 0)
 			{
-				tuple<int, string> *t = new tuple<int, string>(1, w->get_tags()[i]);
-				tagCounter.push_back(t);
+				get<0>(*tagCounter[j]) += 1;
+				found = true;
+				j = tagCounter.size();
 			}
+		if (!found)
+		{
+			tuple<int, string>* t = new tuple<int, string>(1, w->get_tags()[i]);
+			tagCounter.push_back(t);
 		}
-		sort(tagCounter.begin(), tagCounter.end(), &GenreRecommenderUser::genreSort);
-	};
+	}
+	sort(tagCounter.begin(), tagCounter.end(), &GenreRecommenderUser::genreSort);
+};
 
 bool GenreRecommenderUser::genreSort(const tuple<int, string> a, const tuple<int, string> b) {
 	if (get<0>(a) == get<0>(b)) {
@@ -135,7 +113,7 @@ bool GenreRecommenderUser::genreSort(const tuple<int, string> a, const tuple<int
 	}
 };
 
-	GenreRecommenderUser::GenreRecommenderUser(const std::string& _name) : User(_name), tagCounter(0) {};
+GenreRecommenderUser::GenreRecommenderUser(const std::string& _name) : User(_name), tagCounter(0) {};
 
 Watchable* GenreRecommenderUser::getRecommendation(Session& s) {
 	for (size_t i = 0; i < tagCounter.size(); i++)
@@ -152,3 +130,4 @@ Watchable* GenreRecommenderUser::getRecommendation(Session& s) {
 	return nullptr;
 };
 
+string GenreRecommenderUser::algoType() const { return "gen"; };

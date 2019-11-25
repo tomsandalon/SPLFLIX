@@ -45,4 +45,4 @@ private:
 	long nextEpisodeId;
 };
 
-#endif#pragma once
+#endif#
