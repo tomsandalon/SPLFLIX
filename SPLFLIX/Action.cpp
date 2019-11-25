@@ -36,15 +36,17 @@ string BaseAction::getWord(int num, string s) const { //returns a subword
 		}
 	}
 	bool found = false;
-	while (loc < s.length() && !found)
+	int i = 0;
+	while (loc + i < s.length() && !found)
 	{
-		if (s[loc] == ' ')
+		if (s[loc + i] == ' ')
 		{
 			found = true;
 		}
 		else
 		{
-			r = r + s[loc];
+			r = r + s[loc + i];
+			i++;
 		}
 	}
 	return r;
