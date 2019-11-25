@@ -15,6 +15,7 @@ public:
 	~Session();
 	void start();
 	std::vector<Watchable*> get_content() const;
+	User get_user();
 private:
 	std::vector<Watchable*> content;
 	std::vector<BaseAction*> actionsLog;
