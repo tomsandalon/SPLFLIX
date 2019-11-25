@@ -57,7 +57,7 @@ string Movie::toString() const {
 }
 
 Watchable* Movie::getNextWatchable(Session &s) const {
-	std::vector<Watchable*> userHistory = s.get_user().get_history();
+	std::vector<Watchable*> userHistory = s.getActiveUser().get_history();
 	Watchable* lastWatchedMovie = userHistory[userHistory.size - 1];
 	//return GetRecommendation;
 }
