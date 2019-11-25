@@ -3,6 +3,8 @@
 
 #include <string>
 #include <iostream>
+#include "User.h";
+#include "Session.h";
 
 class Session;
 
@@ -21,6 +23,8 @@ protected:
 	void complete();
 	void error(const std::string& errorMsg);
 	std::string getErrorMsg() const;
+	std::string getWord(int, std::string) const;
+	int countWords(std::string) const;
 private:
 	std::string errorMsg;
 	ActionStatus status;
@@ -44,7 +48,6 @@ public:
 	virtual std::string toString() const;
 };
 
-
 class DuplicateUser : public BaseAction {
 public:
 	virtual void act(Session& sess);
@@ -55,6 +58,8 @@ class PrintContentList : public BaseAction {
 public:
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
+private:
+	static std::string tagsToString(std::vector<std::string>);
 };
 
 class PrintWatchHistory : public BaseAction {
@@ -67,7 +72,11 @@ public:
 class Watch : public BaseAction {
 public:
 	virtual void act(Session& sess);
+	virtual void act(Session& sess, Watchable*);
 	virtual std::string toString() const;
+private:
+	static int isInteger(std::string);
+	static char isChar();
 };
 
 
@@ -82,4 +91,4 @@ public:
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
 };
-#endif#pragma once
+#endif
