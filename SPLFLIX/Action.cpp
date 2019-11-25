@@ -359,7 +359,7 @@ void Watch::act(Session& sess) {
 		return;
 	}
 	int id = Watch::isInteger(getWord(1, sess.getLastActionInput())) - 1;
-	if (id < 0 || id >= sess.get_content().size())
+	if (id < 0 || id >= static_cast<int>(sess.get_content().size()))
 	{
 		error("Invalid content ID");
 		cout << getErrorMsg() << endl;

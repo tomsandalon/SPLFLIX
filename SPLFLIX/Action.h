@@ -3,8 +3,8 @@
 
 #include <string>
 #include <iostream>
-#include "User.h";
-#include "Session.h";
+#include "User.h"
+#include "Session.h"
 
 class Session;
 
