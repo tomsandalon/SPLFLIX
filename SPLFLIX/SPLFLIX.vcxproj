@@ -130,8 +130,8 @@
     <ClCompile Include="Watchable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Downloads\json.hpp" />
     <ClInclude Include="Action.h" />
-    <ClInclude Include="json.hpp" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="Watchable.h" />
