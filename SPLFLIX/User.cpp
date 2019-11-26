@@ -22,7 +22,7 @@ bool User::already_watched(Watchable* w) const { //we check if the content was a
 
 LengthRecommenderUser::LengthRecommenderUser(const string& _name) : User(_name) {};
 
-void LengthRecommenderUser::addWatched(Watchable* w) {
+void LengthRecommenderUser::addWatched(Watchable* w) { //add to the watch list
 	if (!already_watched(w))
 		history.push_back(w);
 };
@@ -61,7 +61,7 @@ string LengthRecommenderUser::algoType() const { return "len"; };
 
 RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), currentMovie(0) {};
 
-void RerunRecommenderUser::addWatched(Watchable* w) {
+void RerunRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 	if (!already_watched(w))
 		history.push_back(w);
 };
@@ -76,15 +76,16 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
 	return w;
 };
 
-string RerunRecommenderUser::algoType() const { return "rer"; };
+string RerunRecommenderUser::algoType() const { return "rer"; }; 
 
-void GenreRecommenderUser::addWatched(Watchable* w) {
+void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 	if (!already_watched(w))
 	{
 		return;
 	}
 	history.push_back(w);
 	bool found;
+	//add the proper tags to the tag list
 	for (size_t i = 0; i < w->get_tags().size(); i++)
 	{
 		found = false;
@@ -115,7 +116,7 @@ bool GenreRecommenderUser::genreSort(const tuple<int, string> a, const tuple<int
 
 GenreRecommenderUser::GenreRecommenderUser(const std::string& _name) : User(_name), tagCounter(0) {};
 
-Watchable* GenreRecommenderUser::getRecommendation(Session& s) {
+Watchable* GenreRecommenderUser::getRecommendation(Session& s) { //get the next recommendation
 	for (size_t i = 0; i < tagCounter.size(); i++)
 	{
 		for (size_t j = 0; j < s.get_content().size(); j++)

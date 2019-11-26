@@ -19,7 +19,7 @@ public:
 	std::vector<Watchable*> get_history() const;
 	bool already_watched(Watchable*) const;
 	virtual void addWatched(Watchable*) = 0;
-	virtual std::string algoType() const = 0;
+	virtual std::string algoType() const = 0; //return the type of algo
 protected:
 	std::vector<Watchable*> history;
 private:
