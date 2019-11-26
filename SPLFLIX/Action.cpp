@@ -407,7 +407,7 @@ void Watch::act(Session& sess, Watchable* watch) { //same as the action above, b
 	char c = 'a';
 	while (c != 'y' || c != 'n')
 	{
-		c = Watch::isChar();/ //wait until the user inputs a proper char
+		c = Watch::isChar(); //wait until the user inputs a proper char
 	}
 	if (c == 'n')
 	{

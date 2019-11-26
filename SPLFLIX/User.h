@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Watchable.h"
+#include "Session.h"
 #include <unordered_set>
 #include <unordered_map>
 #include <tuple>
@@ -55,7 +56,7 @@ public:
 private:
 	std::vector<std::tuple<int, std::string>*> tagCounter;
 	virtual void addWatched(Watchable*);
-	bool genreSort(const std::tuple<int, std::string> a, const std::tuple<int, std::string> b);
+	virtual void sortTags();
 };
 
 #endif

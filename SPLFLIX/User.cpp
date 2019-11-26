@@ -40,14 +40,14 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 	double d = -1;
 	double average = averageWatchtime();
 	Watchable* w = nullptr;
-	for (int i = 0; i < s.get_content().size(); i++) {
+	for (size_t i = 0; i < s.get_content().size(); i++) {
 		if (!already_watched(s.get_content()[i])) { //if this content wasn't already watched
-			if (d = -1) {//the first content not watched
+			if (d == -1) {//the first content not watched
 				w = (s.get_content()[i]);
 				d = std::abs(average - w->get_length());
 			}
 			else {
-				if (std::abs(average - s.get_content()[i].get_length() < d)) { //check if we are closer to the required length. it is worth noting that only the first unwatched episode of a series is recommended, as they are inserted in order
+				if (std::abs(average - s.get_content()[i]->get_length() < d)) { //check if we are closer to the required length. it is worth noting that only the first unwatched episode of a series is recommended, as they are inserted in order
 					w = (s.get_content()[i]);
 					d = std::abs(average - w->get_length());
 				}
@@ -102,17 +102,42 @@ void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 			tagCounter.push_back(t);
 		}
 	}
-	sort(tagCounter.begin(), tagCounter.end(), &GenreRecommenderUser::genreSort);
+	sortTags();
 };
 
-bool GenreRecommenderUser::genreSort(const tuple<int, string> a, const tuple<int, string> b) {
-	if (get<0>(a) == get<0>(b)) {
-		return (get<1>(a).compare(get<1>(b)) > 0);		//compare lexicographicly
+void GenreRecommenderUser::sortTags() {
+	bool swapped;
+	string a;
+	string b;
+	for (size_t i = 0; i < tagCounter.size() - 1; i++)
+	{
+		swapped = false;
+		for (size_t j = 0; j < tagCounter.size() - i - 1; j++)
+		{
+			if (get<0>(*tagCounter[j]) > get<0>(*tagCounter[j + 1])) {
+				swap(tagCounter[j], tagCounter[j + 1]);
+				swapped = true;
+			}
+			else if (get<0>(*tagCounter[j]) > get<0>(*tagCounter[j + 1]))
+			{
+				string a = get<1>(*tagCounter[j]);
+				string b = get<1>(*tagCounter[j + 1]);
+				for_each(a.begin(), a.end(), [](char& c) {	//change a to lower string
+					c = ::tolower(c);
+					});
+				for_each(b.begin(), b.end(), [](char& c) {	//chage b to lower string
+					c = ::tolower(c);
+					});
+				if (a > b)
+				{
+					swap(tagCounter[j], tagCounter[j + 1]);
+					swapped = true;
+				}
+			}
+		}
+		if (swapped == false) break;
 	}
-	else {
-		return (get<0>(a) > get<0>(b));					//compare by tags
-	}
-};
+}
 
 GenreRecommenderUser::GenreRecommenderUser(const std::string& _name) : User(_name), tagCounter(0) {};
 
@@ -121,9 +146,9 @@ Watchable* GenreRecommenderUser::getRecommendation(Session& s) { //get the next 
 	{
 		for (size_t j = 0; j < s.get_content().size(); j++)
 		{
-			for (size_t k = 0; k < s.get_content()[i].get_tags()[k]; k++)
+			for (size_t k = 0; k < s.get_content()[i]->get_tags()[k].size(); k++)
 			{
-				if ((get<1>(*tagCounter[i]).compare(s.get_content()[j].get_tags[k]) == 0) && (!already_watched(s.get_content()[i])))
+				if ((get<1>(*tagCounter[i]).compare(s.get_content()[j]->get_tags()[k]) == 0) && (!already_watched(s.get_content()[i])))
 					return s.get_content()[j];
 			}
 		}
