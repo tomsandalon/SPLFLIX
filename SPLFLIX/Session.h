@@ -13,6 +13,7 @@ using json = nlohmann::json;
 
 class User;
 class Watchable;
+class BaseAction;
 
 class Session {
 public:

@@ -57,10 +57,13 @@ void Session::start() {
 
 	json Session::getJsonData(const std::string& configFilePath) {
 
-		string aaa;
 
-		std::ifstream watchableFile(configFilePath, std::ifstream::binary);
+		json aaa;
+
+		std::ifstream watchableFile(configFilePath);
 		watchableFile >> aaa;
 
 		cout << aaa;
+
+		return {};
 	}

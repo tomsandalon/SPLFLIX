@@ -21,10 +21,10 @@ using namespace std;
 	Watchable::~Watchable() {// CHECK THEAT OU
 
 	}
-	int const Watchable::get_length() {
+	int const Watchable::get_length() const{
 		return length;
 	}
-	long const Watchable::get_id() {
+	long const Watchable::get_id() const{
 		return id;
 	}
 	std::vector<std::string> Watchable::get_tags() const {
@@ -36,11 +36,14 @@ using namespace std;
 
 
 	string Movie::toString() const {
-		cout << get_id << endl;
-		cout << get_length;
+		cout << get_id() << endl;
+		cout << get_length();
 		cout << name << endl;
 		for (int i = 0; i < get_tags().size(); i++)
 			cout << get_tags()[i];
+
+
+		return  "need to be done";
 	}
 	
 
@@ -54,7 +57,9 @@ using namespace std;
 	Episode::Episode(long id, const std::string& seriesName, int length, int season, int episode,  std::vector<std::string>& tags) : Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode)
 	{}
 
-	std::string Episode::toString() const{cout << seriesName << endl; }
+	std::string Episode::toString() const{
+		return seriesName;
+	}
 
 	Watchable* Episode::getNextWatchable(Session &s) const {
 		for (int i = 0; i <= s.get_content().size(); i++) {

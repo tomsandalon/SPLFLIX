@@ -8,7 +8,10 @@ int main(int argc, char** argv) {
 		cout << "usage splflix input_file" << endl;
 		return 0;
 	}
+
 	Session s(argv[1]);
+
+	return 0;
 	s.start();
 	return 0;
 }
