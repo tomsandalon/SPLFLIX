@@ -5,13 +5,13 @@ BaseAction::BaseAction() : status(PENDING), errorMsg("") {};
 
 ActionStatus BaseAction::getStatus() const { return status; };
 
-void BaseAction::complete() { status = COMPLETED; };
+void BaseAction::complete() { status = COMPLETED; }; //change status to complete
 
-void BaseAction::error(const string& _errorMsg) { status = ERROR; errorMsg = _errorMsg; };
+void BaseAction::error(const string& _errorMsg) { status = ERROR; errorMsg = _errorMsg; }; //change status to error and log the error
 
-string BaseAction::getErrorMsg() const { return errorMsg; };
+string BaseAction::getErrorMsg() const { return errorMsg; }; 
 
-int BaseAction::countWords(string s) const {
+int BaseAction::countWords(string s) const { //count the number of words in a string
 	int count = 0;
 	for (size_t i = 0; i < s.length(); i++)
 	{
@@ -54,7 +54,7 @@ string BaseAction::getWord(int num, string s) const { //returns a subword
 
 void CreateUser::act(Session& sess) {
 	User* u;
-	if (countWords(sess.getLastActionInput()) != 3)
+	if (countWords(sess.getLastActionInput()) != 3) //if the number of arguments does not match
 	{
 		error("The number of variables for this command is illegal");
 		cout << getErrorMsg() << endl;
@@ -62,13 +62,13 @@ void CreateUser::act(Session& sess) {
 	}
 	string userName = getWord(1, sess.getLastActionInput());
 	string algo = getWord(2, sess.getLastActionInput());
-	if (sess.getUserMap().count(userName) > 0)
+	if (sess.getUserMap().count(userName) > 0) //if the username is available
 	{
 		error("This username is already taken");
 		cout << getErrorMsg() << endl;
 		return;
 	}
-	if (algo == "len")
+	if (algo == "len") //length algo
 	{
 		u = new LengthRecommenderUser(userName);
 		sess.getUserMap()[userName] = u;
@@ -76,7 +76,7 @@ void CreateUser::act(Session& sess) {
 		complete();
 		return;
 	}
-	if (algo == "rer")
+	if (algo == "rer") //rerun algo
 	{
 		u = new RerunRecommenderUser(userName);
 		sess.getUserMap()[userName] = u;
@@ -84,7 +84,7 @@ void CreateUser::act(Session& sess) {
 		complete();
 		return;
 	}
-	if (algo == "gen")
+	if (algo == "gen") //genre algo
 	{
 		u = new GenreRecommenderUser(userName);
 		sess.getUserMap()[userName] = u;
@@ -113,14 +113,14 @@ string CreateUser::toString() const{
 }
 
 void ChangeActiveUser::act(Session& sess) {
-	if (countWords(sess.getLastActionInput()) != 2)
+	if (countWords(sess.getLastActionInput()) != 2) //if the number of arguments is invalid
 	{
 		error("Invalid arguments for change active user action");
 		cout << getErrorMsg() << endl;
 		return;
 	}
 	string userName = getWord(1, sess.getLastActionInput());
-	if (sess.getUserMap().count(userName) == 0)
+	if (sess.getUserMap().count(userName) == 0) //if the username exists
 	{
 		error("Username not found");
 		cout << getErrorMsg() << endl;
@@ -151,20 +151,20 @@ string ChangeActiveUser::toString() const {
 }
 
 void DeleteUser::act(Session& sess) {
-	if (countWords(sess.getLastActionInput()) != 2)
+	if (countWords(sess.getLastActionInput()) != 2) //if the number of arguments is invalid
 	{
 		error("Invalid arguments for delete user action");
 		cout << getErrorMsg() << endl;
 		return;
 	}
 	string userName = getWord(1, sess.getLastActionInput());
-	if (sess.getActiveUser()->getName() == userName)
+	if (sess.getActiveUser()->getName() == userName) //if the username to delete is the active username
 	{
 		error("Cant delete current active user");
 		cout << getErrorMsg() << endl;
 		return;
 	}
-	if (sess.getUserMap().count(userName) == 0)
+	if (sess.getUserMap().count(userName) == 0) //if the username exists
 	{
 		error("Username not found");
 		cout << getErrorMsg() << endl;
@@ -172,9 +172,9 @@ void DeleteUser::act(Session& sess) {
 	}
 	else
 	{
-		sess.getUserMap()[userName]->~User();
-		sess.getUserMap()[userName] = nullptr;
-		sess.getUserMap().erase(userName);
+		sess.getUserMap()[userName]->~User(); //delete the user
+		sess.getUserMap()[userName] = nullptr; //apply null pointer
+		sess.getUserMap().erase(userName); //delete the slot in the hash table
 		cout << "Deleted username " << userName << endl;
 		complete();
 		return;
@@ -197,7 +197,7 @@ string DeleteUser::toString() const {
 }
 
 void DuplicateUser::act(Session& sess) {
-	if (countWords(sess.getLastActionInput()) != 3)
+	if (countWords(sess.getLastActionInput()) != 3) //if the number of arguments is valid
 	{
 		error("Invalid arguments for duplicate user action");
 		cout << getErrorMsg() << endl;
@@ -205,19 +205,20 @@ void DuplicateUser::act(Session& sess) {
 	}
 	string oldUser = getWord(1, sess.getLastActionInput());
 	string newUser = getWord(2, sess.getLastActionInput());
-	if (sess.getUserMap().count(oldUser) == 0)
+	if (sess.getUserMap().count(oldUser) == 0) //if the old username exists
 	{
 		error("Original username does not exist");
 		cout << getErrorMsg() << endl;
 		return;
 	}
-	if (sess.getUserMap().count(newUser) > 0)
+	if (sess.getUserMap().count(newUser) > 0) //if the new username exists
 	{
 		error("New username already exist");
 		cout << getErrorMsg() << endl;
 		return;
 	}
 	User* u;
+	///////////check algo type of the old user//////////////
 	if (sess.getUserMap()[oldUser]->algoType() == "len")
 	{
 		u = new LengthRecommenderUser(newUser);
@@ -230,6 +231,7 @@ void DuplicateUser::act(Session& sess) {
 	{
 		u = new GenreRecommenderUser(newUser);
 	}
+	//add the same watchables to the new user
 	for (size_t i = 0; i < sess.getUserMap()[oldUser]->get_history().size(); i++)
 	{
 		u->addWatched(sess.getUserMap()[oldUser]->get_history()[i]);
@@ -256,7 +258,7 @@ string DuplicateUser::toString() const {
 }
 
 
-string PrintContentList::tagsToString(vector<string> tags) {
+string PrintContentList::tagsToString(vector<string> tags) { //creating a valid string from tags
 	string s = "[";
 	for (size_t i = 0; i < tags.size(); i++)
 	{
@@ -271,13 +273,13 @@ string PrintContentList::tagsToString(vector<string> tags) {
 }
 
 void PrintContentList::act(Session& sess) {
-	if (sess.get_content().size() == 0)
+	if (sess.get_content().size() == 0) //check if there is content
 	{
 		error("No content in SPLFLIX");
 		cout << getErrorMsg() << endl;
 		return;
 	}
-	for (size_t i = 0; i < sess.get_content().size(); i++)
+	for (size_t i = 0; i < sess.get_content().size(); i++) //print the content
 	{
 		cout << (i + 1) << ". " << sess.get_content()[i]->toString() << " " << sess.get_content()[i]->get_length() << " minutes " << PrintContentList::tagsToString(sess.get_content()[i]->get_tags()) << endl;
 	}
@@ -301,14 +303,14 @@ string PrintContentList::toString() const {
 }
 
 void PrintWatchHistory::act(Session& sess) {
-	if (sess.getActiveUser()->get_history().size() == 0)
+	if (sess.getActiveUser()->get_history().size() == 0) //check if the user has history
 	{
 		error("Current user has not watched anything yet");
 		cout << getErrorMsg() << endl;
 		return;
 	}
 	cout << "Watch history for " << sess.getActiveUser()->getName() << endl;
-	for (size_t i = 0; i < sess.getActiveUser()->get_history().size(); i++)
+	for (size_t i = 0; i < sess.getActiveUser()->get_history().size(); i++) //print the history according to the format
 	{
 		cout << (i+1) << ". " << sess.getActiveUser()->get_history()[i]->toString() << endl;
 	}
@@ -331,7 +333,7 @@ string PrintWatchHistory::toString() const {
 	}
 }
 
-int Watch::isInteger(string s) {
+int Watch::isInteger(string s) { //check if the string can be cast to string, then cast it
 	try {
 		return stoi(s);
 	}
@@ -340,7 +342,7 @@ int Watch::isInteger(string s) {
 	}
 }
 
-char Watch::isChar() {
+char Watch::isChar() { //try to cast input to char
 	try {
 		char c;
 		cin >> c;
@@ -352,22 +354,22 @@ char Watch::isChar() {
 }
 
 void Watch::act(Session& sess) {
-	if (countWords(sess.getLastActionInput()) != 2)
+	if (countWords(sess.getLastActionInput()) != 2) //check if the number of arguments is valid
 	{
 		error("Invalid arguments for watch user action");
 		cout << getErrorMsg() << endl;
 		return;
 	}
-	int id = Watch::isInteger(getWord(1, sess.getLastActionInput())) - 1;
-	if (id < 0 || id >= static_cast<int>(sess.get_content().size()))
+	int id = Watch::isInteger(getWord(1, sess.getLastActionInput())) - 1; //find the id of the movie - it's location is (printed id-1)
+	if (id < 0 || id >= static_cast<int>(sess.get_content().size())) //if the movie id exists
 	{
 		error("Invalid content ID");
 		cout << getErrorMsg() << endl;
 		return;
 	}
 	cout << "Watching " << sess.get_content()[id]->toString() << endl;
-	sess.getActiveUser()->addWatched(sess.get_content()[id]);
-	Watchable* w = sess.get_content()[id]->getNextWatchable(sess);
+	sess.getActiveUser()->addWatched(sess.get_content()[id]); //watch the watchable
+	Watchable* w = sess.get_content()[id]->getNextWatchable(sess); //get the next recommendation
 	complete();
 	if (w == nullptr)
 	{
@@ -376,7 +378,7 @@ void Watch::act(Session& sess) {
 	}
 	cout << "We recommend watching " << w->toString() << ", continue watching? [y/n]" << endl;
 	char c = 'a';
-	while (c != 'y' || c != 'n')
+	while (c != 'y' || c != 'n') //dont stop until the user inputs a proper char
 	{
 		c = Watch::isChar();
 	}
@@ -386,15 +388,15 @@ void Watch::act(Session& sess) {
 	}
 	else
 	{
-		sess.watchRecommendationFromAction(w);
+		sess.watchRecommendationFromAction(w); //send the session a command to watch the watchable
 		return;
 	}
 }
 
-void Watch::act(Session& sess, Watchable* watch) {
+void Watch::act(Session& sess, Watchable* watch) { //same as the action above, but this time we don't have to look for the content according to the input
 	cout << "Watching " << watch->toString() << endl;
-	sess.getActiveUser()->addWatched(watch);
-	Watchable* w = watch->getNextWatchable(sess);
+	sess.getActiveUser()->addWatched(watch); //watch the watchable
+	Watchable* w = watch->getNextWatchable(sess); //get the next recommendation
 	complete();
 	if (w == nullptr)
 	{
@@ -405,7 +407,7 @@ void Watch::act(Session& sess, Watchable* watch) {
 	char c = 'a';
 	while (c != 'y' || c != 'n')
 	{
-		c = Watch::isChar();
+		c = Watch::isChar(); //wait until the user inputs a proper char
 	}
 	if (c == 'n')
 	{
@@ -433,7 +435,7 @@ string Watch::toString() const {
 	}
 }
 
-void PrintActionsLog::act(Session& sess) {
+void PrintActionsLog::act(Session& sess) { //print the action log
 	for (size_t i = 0; i < sess.getActionLog().size(); i++)
 	{
 		cout << sess.getActionLog()[i]->toString() << endl;

@@ -20,7 +20,7 @@ public:
 	std::vector<Watchable*> get_history() const;
 	bool already_watched(Watchable*) const;
 	virtual void addWatched(Watchable*) = 0;
-	virtual std::string algoType() const = 0;
+	virtual std::string algoType() const = 0; //return the type of algo
 protected:
 	std::vector<Watchable*> history;
 private:
@@ -56,7 +56,7 @@ public:
 private:
 	std::vector<std::tuple<int, std::string>*> tagCounter;
 	virtual void addWatched(Watchable*);
-	bool genreSort(const std::tuple<int, std::string> a, const std::tuple<int, std::string> b);
+	virtual void sortTags();
 };
 
 #endif
