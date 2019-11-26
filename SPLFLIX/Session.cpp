@@ -1,5 +1,7 @@
 
 #include "Session.h"
+#include "User.h"
+
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -22,7 +24,15 @@ Session::~Session() {// CHECK THEAT OU
 
 
 void Session::start() {
+	cout << "SPLFLIX is now on!";
 
+	//and initializing a default watching user
+	activeUser = &LengthRecommenderUser("default");
+
+
+	/* wait for the user to enter an action to execute.
+	After each executed action, it should wait for the next action.
+		The loop ends when the user enters the action "exit". (See actions in part 3.4)*/
 }
 
 	std::vector<Watchable*> Session::get_content() const {
@@ -57,8 +67,8 @@ void Session::start() {
 
 	json Session::getJsonData(const std::string& configFilePath) {
 
-
-		json aaa;
+		
+		string aaa;
 
 		std::ifstream watchableFile(configFilePath);
 		watchableFile >> aaa;

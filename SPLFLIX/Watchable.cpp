@@ -39,11 +39,12 @@ using namespace std;
 		cout << get_id() << endl;
 		cout << get_length();
 		cout << name << endl;
+		string tags = "";
 		for (int i = 0; i < get_tags().size(); i++)
-			cout << get_tags()[i];
+			tags = tags +", " + get_tags()[i];
 
 
-		return  "need to be done";
+		return name + to_string(get_length()) + "minutes" + "[" + tags + "]"; //"id:" + get_id() + "length: " + get_length();
 	}
 	
 
