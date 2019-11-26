@@ -33,6 +33,6 @@ private:
 	std::vector<BaseAction*> actionsLog;
 	std::unordered_map<std::string, User*> userMap;
 	User* activeUser;
-	std::string lastActionInput();
+	std::string lastActionInput;
 };
 #endif

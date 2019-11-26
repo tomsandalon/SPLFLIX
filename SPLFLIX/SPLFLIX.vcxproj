@@ -125,13 +125,19 @@
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Session.cpp" />
     <ClCompile Include="User.cpp" />
+    <ClCompile Include="Watchable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="Watchable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config1.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

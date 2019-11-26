@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Watchable.h"
+#include "Session.h"
 #include <unordered_set>
 #include <unordered_map>
 #include <tuple>

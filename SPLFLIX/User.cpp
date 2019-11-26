@@ -1,6 +1,7 @@
 #include "User.h"
 using namespace std;
 
+
 User::User(const string& _name) : name(_name), history(0) {} //user constructor
 
 string User::getName() const {

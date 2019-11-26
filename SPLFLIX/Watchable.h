@@ -9,14 +9,15 @@ class Session;
 
 class Watchable {
 public:
-	Watchable(long id, int length,  std::vector<std::string>& tags);
+	Watchable(long id, int length, const std::vector<std::string>& tags);
 	Watchable(const Watchable& other);
 	virtual ~Watchable();
-	virtual std::string toString() const = 0;
-	virtual Watchable* getNextWatchable(Session&) const = 0;
+	virtual std::string toString() const = 0; //
+	virtual Watchable* getNextWatchable(Session&) const = 0;//
 	int const get_length();
 	long const get_id();
-	std::vector<std::string> get_tags();
+	std::vector<std::string> get_tags() const;
+	
 private:
 	const long id;
 	int length;
