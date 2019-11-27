@@ -36,15 +36,15 @@ using namespace std;
 
 
 	string Movie::toString() const {
-		cout << get_id() << endl;
-		cout << get_length();
-		cout << name << endl;
 		string tags = "";
-		for (int i = 0; i < get_tags().size(); i++)
-			tags = tags +", " + get_tags()[i];
-
-
-		return name + to_string(get_length()) + "minutes" + "[" + tags + "]"; //"id:" + get_id() + "length: " + get_length();
+		for (int i = 0; i < get_tags().size(); i++) {
+			tags = tags + get_tags()[i]  ;
+			if (i != (get_tags().size()-1))
+			{
+			tags = tags + ",";
+			}
+		}
+		return "id:" + to_string(get_id()) + " " +  name+ " "  +  "minutes:" +to_string(get_length())  + " " +"[" + tags + "]";
 	}
 	
 
@@ -59,7 +59,32 @@ using namespace std;
 	{}
 
 	std::string Episode::toString() const{
-		return seriesName;
+		string episodeN;
+		string seasonN;
+		string tags = "";
+		for (int i = 0; i < get_tags().size(); i++) {
+			tags = tags + get_tags()[i];
+			if (i != (get_tags().size() - 1))
+			{
+				tags = tags + ",";
+			}
+		}
+		if (episode >= 10)
+			episodeN = to_string(episode);
+		else
+			episodeN = "0" + to_string(episode);
+		if (season >= 10)
+			seasonN = to_string(season);
+		else
+			seasonN = "0" + to_string(season);
+	
+
+
+
+
+		return "id:" + to_string(get_id()) + " " + seriesName + " " +"S"+ seasonN + "E" + episodeN + " "  + "minutes:" + to_string(get_length()) + " "+"[" + tags + "]";
+
+
 	}
 
 	Watchable* Episode::getNextWatchable(Session &s) const {

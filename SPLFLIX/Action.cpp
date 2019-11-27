@@ -281,7 +281,8 @@ void PrintContentList::act(Session& sess) {
 	}
 	for (size_t i = 0; i < sess.get_content().size(); i++) //print the content
 	{
-		cout << (i + 1) << ". " << sess.get_content()[i]->toString() << " " << sess.get_content()[i]->get_length() << " minutes " << PrintContentList::tagsToString(sess.get_content()[i]->get_tags()) << endl;
+		cout << (i + 1) << ". " << sess.get_content()[i]->toString()  << endl;
+		//cout << (i +1) << ". " << sess.get_content()[i]->toString() << " " << sess.get_content()[i]->get_length() << " minutes " << PrintContentList::tagsToString(sess.get_content()[i]->get_tags()) << endl;
 	}
 	complete();
 	return;
@@ -378,7 +379,7 @@ void Watch::act(Session& sess) {
 	}
 	cout << "We recommend watching " << w->toString() << ", continue watching? [y/n]" << endl;
 	char c = 'a';
-	while (c != 'y' || c != 'n') //dont stop until the user inputs a proper char
+	while (c != 'y' && c != 'n') //dont stop until the user inputs a proper char
 	{
 		c = Watch::isChar();
 	}
@@ -439,10 +440,18 @@ void PrintActionsLog::act(Session& sess) { //print the action log
 	for (size_t i = 0; i < sess.getActionLog().size(); i++)
 	{
 		cout << sess.getActionLog()[i]->toString() << endl;
+		
 	}
 	complete();
 	return;
 }
+
+
+
+
+
+
+
 
 string PrintActionsLog::toString() const {
 	if (getStatus() == ERROR)

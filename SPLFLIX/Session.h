@@ -14,13 +14,13 @@ using json = nlohmann::json;
 class User;
 class Watchable;
 class BaseAction;
-
+class PrintActionsLog;
 class Session {
 public:
 	Session(const std::string& configFilePath);
 	~Session();
 	void start();
-
+	void DisplayMenu();  // newww
 	std::vector<Watchable*> get_content() const; //new
 	std::string getLastActionInput() const; //new
 	std::unordered_map<std::string, User*> getUserMap() const; //new

@@ -11,7 +11,6 @@ int main(int argc, char** argv) {
 
 	Session s(argv[1]);
 
-	return 0;
 	s.start();
 	return 0;
 }
