@@ -1,4 +1,3 @@
-
 #include "Session.h"
 #include "User.h"
 #include "Watchable.h"
@@ -28,6 +27,7 @@ Session::~Session() {// CHECK THEAT OU
 void Session::start() {
 	cout << "SPLFLIX is now on!";
 	run = true;
+
 	//and initializing a default watching user
 	activeUser = &LengthRecommenderUser("default");
 
@@ -37,53 +37,79 @@ void Session::start() {
 
 	string userInput;
 
-	while(run) {
-
+	while (run) {
 
 		DisplayMenu();
 
 		cout << endl << "\t\t\t\tPlease select an option: ";
-		
+
 
 		getline(cin, userInput);
 
 		if (userInput.compare("content") == 0) {
-			BaseAction* a = new PrintContentList();
+			PrintContentList* a = new PrintContentList();
 			a->act(*this);
-			//a->toString();
+			a->toString();
 			actionsLog.push_back(a);
 			//cout << "jjjj" << actionsLog[0]->toString();
 			//delete a;
-			//system("PAUSE");
-			//system("CLS");
+			system("PAUSE");
+			system("CLS");
 		}
 		else if (userInput.length() >= 7 && userInput.substr(0, 5).compare("watch") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new Watch();
+			Watch* a = new Watch();
 			a->act(*this);
-			//a->toString();
+			a->toString();
 			actionsLog.push_back(a);
-			//system("PAUSE");
-			//system("CLS");
+			//TODO: add it actionsLog
+			system("PAUSE");
+			system("CLS");
 		}
 		else if (userInput.compare("log") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new PrintActionsLog();
+			PrintActionsLog* a = new PrintActionsLog();
 			a->act(*this);
+			a->toString();
 			actionsLog.push_back(a);
-			//a->toString();
-			//system("PAUSE");
-			//system("CLS");
+			system("PAUSE");
+			system("CLS");
+			break;
 		}
+		else if (userInput.compare("watchhist") == 0) {
+			lastActionInput = userInput;
+			PrintWatchHistory* a = new PrintWatchHistory();
+			a->act(*this);
+			a->toString();
+			actionsLog.push_back(a);
+			system("PAUSE");
+			system("CLS");
+			break;
+		}
+		else if (userInput.length() > 9 && userInput.substr(0, 6).compare("dupuser ") == 0) {
+			lastActionInput = userInput;
+			DuplicateUser* a = new DuplicateUser();
+			actionsLog.push_back(a);
+			a->act(*this);
+			a->toString();
+			system("PAUSE");
+			system("CLS");
+			break;
+		}
+
+
+
 		else if (userInput.length() == 4 && userInput.substr(0, 4).compare("exit") == 0) {
 			lastActionInput = userInput;
 			BaseAction* a = new Exit();
 			a->act(*this);
 			actionsLog.push_back(a);
+
 		}
 		else {
 			cout << "Please choose a valid option:" << endl
 				<< "=============================" << endl;
+			cin.ignore();
 		}
 	}
 
@@ -132,18 +158,18 @@ json Session::getJsonData(const std::string& configFilePath) {
 
 
 
-	int id_count=1;
+	int id_count = 1;
 	for (int i = 0; i < aaa["movies"].size(); i++) {
 		vector<string> vect = aaa["movies"][i]["tags"];
 		Movie* watchC = new Movie(id_count, aaa["movies"][i]["name"], aaa["movies"][i]["length"], vect);
 		id_count++;
 		content.push_back(watchC);
-		//cout << vect[0] + "kkkk" << endl;
+		cout << vect[0] + "kkkk" << endl;
 	}
 
 
 	for (int j = 0; j < aaa["tv_series"].size(); j++) {
-		//cout << "jjjj";
+		cout << "jjjj";
 		vector<string> vect2 = aaa["tv_series"][j]["tags"];
 		for (int i = 0; i < aaa["tv_series"][j]["seasons"].size(); i++) {
 			for (int k = 0; k < aaa["tv_series"][j]["seasons"][i]; k++) {
@@ -152,18 +178,18 @@ json Session::getJsonData(const std::string& configFilePath) {
 				id_count++;
 				content.push_back(watchS);
 
-				if ((aaa["tv_series"][j]["seasons"][i]  == k +1) && (i == aaa["tv_series"][j]["seasons"].size() - 1)) {
-					
-						watchS->set_Next_Episode(-1);
+				if ((aaa["tv_series"][j]["seasons"][i] == k + 1) && (i == aaa["tv_series"][j]["seasons"].size() - 1)) {
+
+					watchS->set_Next_Episode(-1);
 				}
 				else
-						watchS->set_Next_Episode(id_count);
-		
+					watchS->set_Next_Episode(id_count);
+
 			}
 		}
 	}
 
-	/**
+
 	cout << (*content[0]).toString() << endl;
 	cout << (*content[1]).toString() << endl;
 	cout << (*content[2]).toString() << endl;
@@ -173,7 +199,7 @@ json Session::getJsonData(const std::string& configFilePath) {
 	cout << (*content[5]).toString() << endl;
 	cout << (*content[6]).toString() << endl;
 
-	**/
+
 
 
 	return {};
@@ -183,10 +209,10 @@ void Session::DisplayMenu()
 {
 
 
-	cout << endl << "\t\t\t\t  ***********************  " << endl
+	cout << endl << "\t\t\t\t  *********  " << endl
 		<< "\t\t\t\t||        SPLFLIX          ||" << endl
 		<< "\t\t\t\t||       is now on!        ||" << endl
-		<< "\t\t\t\t  ***********************  " << endl << endl
+		<< "\t\t\t\t  *********  " << endl << endl
 		<< "\t\t\t\t                           " << endl
 		<< "\t\t\t\t===========================" << endl
 		<< "\t\t\t\t\tMAIN MENU: " << endl
@@ -196,7 +222,6 @@ void Session::DisplayMenu()
 		<< "\t\t\t\t4--> exit" << endl;
 
 }
-
 void Session::setRunToFalse() {
 	run = false;
 }
