@@ -83,10 +83,10 @@ using namespace std;
 	
 
 
-
-
-		return "idNext:" + to_string(nextEpisodeId) + "id:" + to_string(get_id()) + " " + seriesName + " " +"S"+ seasonN + "E" + episodeN + " "  + "minutes:" + to_string(get_length()) + " "+"[" + tags + "]";
-
+		
+		//removed idNext from toString
+		//return "idNext:" + to_string(nextEpisodeId) + "id:" + to_string(get_id()) + " " + seriesName + " " +"S"+ seasonN + "E" + episodeN + " "  + "minutes:" + to_string(get_length()) + " "+"[" + tags + "]";
+		return "id:" + to_string(get_id()) + " " + seriesName + " " + "S" + seasonN + "E" + episodeN + " " + "minutes:" + to_string(get_length()) + " " + "[" + tags + "]";
 
 	}
 
@@ -94,12 +94,11 @@ using namespace std;
 		if (nextEpisodeId == -1)
 			return (*s.getActiveUser()).getRecommendation(s);
 		for (int i = 0; i <= s.get_content().size(); i++) {
-
 			if ((*s.get_content()[i]).get_id() == nextEpisodeId)  {
 				return s.get_content()[i];
-			
 			}
 		}
+		return (*s.getActiveUser()).getRecommendation(s);
 	}
 
 	

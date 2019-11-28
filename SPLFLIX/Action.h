@@ -72,7 +72,6 @@ public:
 class Watch : public BaseAction { //this is the only action to be inserted to the action log *before* activation, rather than after activation
 public:
 	virtual void act(Session& sess);
-	virtual void act(Session& sess, Watchable*);
 	virtual std::string toString() const;
 private:
 	static int isInteger(std::string);

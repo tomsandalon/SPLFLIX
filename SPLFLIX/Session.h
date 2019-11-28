@@ -28,6 +28,7 @@ public:
 	User* getActiveUser() const; //new
 	void watchRecommendationFromAction(Watchable*); //new
 	std::vector<BaseAction*> getActionLog() const; //new
+	void setRunToFalse(); //new
 private:
 	json getJsonData(const std::string& configFilePath);
 	std::vector<Watchable*> content;
@@ -35,5 +36,6 @@ private:
 	std::unordered_map<std::string, User*> userMap;
 	User* activeUser;
 	std::string lastActionInput;
+	bool run;
 };
 #endif

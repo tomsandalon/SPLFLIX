@@ -384,38 +384,13 @@ void Watch::act(Session& sess) {
 	}
 	if (c == 'n')
 	{
+		while ((getchar()) != '\n');
 		return;
 	}
 	else
 	{
+		while ((getchar()) != '\n');
 		sess.watchRecommendationFromAction(w); //send the session a command to watch the watchable
-		return;
-	}
-}
-
-void Watch::act(Session& sess, Watchable* watch) { //same as the action above, but this time we don't have to look for the content according to the input
-	cout << "Watching " << watch->toString() << endl;
-	sess.getActiveUser()->addWatched(watch); //watch the watchable
-	Watchable* w = watch->getNextWatchable(sess); //get the next recommendation
-	complete();
-	if (w == nullptr)
-	{
-		cout << "No more content to recommend" << endl;
-		return;
-	}
-	cout << "We recommend watching " << w->toString() << ", continue watching? [y/n]" << endl;
-	char c = 'a';
-	while (c != 'y' || c != 'n')
-	{
-		c = Watch::isChar(); //wait until the user inputs a proper char
-	}
-	if (c == 'n')
-	{
-		return;
-	}
-	else
-	{
-		sess.watchRecommendationFromAction(w);
 		return;
 	}
 }
@@ -447,12 +422,6 @@ void PrintActionsLog::act(Session& sess) { //print the action log
 
 
 
-
-
-
-
-
-
 string PrintActionsLog::toString() const {
 	if (getStatus() == ERROR)
 	{
@@ -465,5 +434,34 @@ string PrintActionsLog::toString() const {
 	else // (getStatus() == PENDING)
 	{
 		return "Log printing is still pending";
+	}
+}
+
+void Exit::act(Session& sess) {
+	try {
+		sess.setRunToFalse();
+		complete();
+		return;
+	}
+	catch (exception & e)
+	{
+		error("Failed to exit");
+		cout << getErrorMsg() << endl;
+		return;
+	}
+}
+
+string Exit::toString() const {
+	if (getStatus() == ERROR)
+	{
+		return "Exit resulted in an error:\t" + getErrorMsg();
+	}
+	if (getStatus() == COMPLETED)
+	{
+		return "Exit successfully";
+	}
+	else // (getStatus() == PENDING)
+	{
+		return "Exit is still pending";
 	}
 }

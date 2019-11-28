@@ -27,7 +27,7 @@ Session::~Session() {// CHECK THEAT OU
 
 void Session::start() {
 	cout << "SPLFLIX is now on!";
-
+	run = true;
 	//and initializing a default watching user
 	activeUser = &LengthRecommenderUser("default");
 
@@ -37,7 +37,8 @@ void Session::start() {
 
 	string userInput;
 
-	while(true) {
+	while(run) {
+
 
 		DisplayMenu();
 
@@ -47,46 +48,54 @@ void Session::start() {
 		getline(cin, userInput);
 
 		if (userInput.compare("content") == 0) {
-			PrintContentList* a = new PrintContentList();
+			BaseAction* a = new PrintContentList();
 			a->act(*this);
-			a->toString();
+			//a->toString();
 			actionsLog.push_back(a);
 			//cout << "jjjj" << actionsLog[0]->toString();
 			//delete a;
-			system("PAUSE");
-			system("CLS");
+			//system("PAUSE");
+			//system("CLS");
 		}
 		else if (userInput.length() >= 7 && userInput.substr(0, 5).compare("watch") == 0) {
 			lastActionInput = userInput;
-			Watch* a = new Watch();
+			BaseAction* a = new Watch();
 			a->act(*this);
-			a->toString();
-			//TODO: add it actionsLog
-			system("PAUSE");
-			system("CLS");
+			//a->toString();
+			actionsLog.push_back(a);
+			//system("PAUSE");
+			//system("CLS");
 		}
 		else if (userInput.compare("log") == 0) {
-			//lastActionInput = userInput;
-			//PrintActionsLog* a = new PrintActionsLog();
-			//a->act(*this);
+			lastActionInput = userInput;
+			BaseAction* a = new PrintActionsLog();
+			a->act(*this);
+			actionsLog.push_back(a);
 			//a->toString();
-			system("PAUSE");
-			system("CLS");
-			
-			
-			
-			
-			;
-			break;
+			//system("PAUSE");
+			//system("CLS");
+		}
+		else if (userInput.substr(0, 10).compare("createuser") == 0) {
+			lastActionInput = userInput;
+			BaseAction* a = new CreateUser();
+			a->act(*this);
+			actionsLog.push_back(a);
+		}
+		else if (userInput.substr(0, 10).compare("createuser") == 0) {
+			lastActionInput = userInput;
+			BaseAction* a = new CreateUser();
+			a->act(*this);
+			actionsLog.push_back(a);
 		}
 		else if (userInput.length() == 4 && userInput.substr(0, 4).compare("exit") == 0) {
-			cout << "\nexit\n" << endl;
-			break;
+			lastActionInput = userInput;
+			BaseAction* a = new Exit();
+			a->act(*this);
+			actionsLog.push_back(a);
 		}
 		else {
 			cout << "Please choose a valid option:" << endl
 				<< "=============================" << endl;
-			cin.ignore();
 		}
 	}
 
@@ -141,12 +150,12 @@ json Session::getJsonData(const std::string& configFilePath) {
 		Movie* watchC = new Movie(id_count, aaa["movies"][i]["name"], aaa["movies"][i]["length"], vect);
 		id_count++;
 		content.push_back(watchC);
-		cout << vect[0] + "kkkk" << endl;
+		//cout << vect[0] + "kkkk" << endl;
 	}
 
 
 	for (int j = 0; j < aaa["tv_series"].size(); j++) {
-		cout << "jjjj";
+		//cout << "jjjj";
 		vector<string> vect2 = aaa["tv_series"][j]["tags"];
 		for (int i = 0; i < aaa["tv_series"][j]["seasons"].size(); i++) {
 			for (int k = 0; k < aaa["tv_series"][j]["seasons"][i]; k++) {
@@ -166,7 +175,7 @@ json Session::getJsonData(const std::string& configFilePath) {
 		}
 	}
 
-
+	/**
 	cout << (*content[0]).toString() << endl;
 	cout << (*content[1]).toString() << endl;
 	cout << (*content[2]).toString() << endl;
@@ -176,7 +185,7 @@ json Session::getJsonData(const std::string& configFilePath) {
 	cout << (*content[5]).toString() << endl;
 	cout << (*content[6]).toString() << endl;
 
-
+	**/
 
 
 	return {};
@@ -200,4 +209,6 @@ void Session::DisplayMenu()
 
 }
 
-
+void Session::setRunToFalse() {
+	run = false;
+}
