@@ -23,10 +23,18 @@
       ]
     },
     {
-      "name" : "Pulp Fiction",
+      "name": "Pulp Fiction",
       "length": 154,
-      "tags": ["Crime",
-               "Drama"
+      "tags": [
+        "Crime",
+        "Drama"
+      ]
+    },
+    {
+      "name": "Crim stuff 1",
+      "length": 154,
+      "tags": [
+        "Crime"
       ]
     }
   ],
