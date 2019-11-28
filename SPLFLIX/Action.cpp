@@ -71,7 +71,7 @@ void CreateUser::act(Session& sess) {
 	{
 		u = new LengthRecommenderUser(userName);
 		sess.getUserMap()[userName] = u;
-		cout << "Created new user named: " << userName << "\twith Length algorithm" <<endl;
+		cout << "Created new user named: " << userName << " with Length algorithm" <<endl;
 		complete();
 		return;
 	}
@@ -79,7 +79,7 @@ void CreateUser::act(Session& sess) {
 	{
 		u = new RerunRecommenderUser(userName);
 		sess.getUserMap()[userName] = u;
-		cout << "Created new user named: " << userName << "\twith Rerun algorithm" << endl;
+		cout << "Created new user named: " << userName << " with Rerun algorithm" << endl;
 		complete();
 		return;
 	}
@@ -87,7 +87,7 @@ void CreateUser::act(Session& sess) {
 	{
 		u = new GenreRecommenderUser(userName);
 		sess.getUserMap()[userName] = u;
-		cout << "Created new user named: " << userName << "\twith Genre algorithm" << endl;
+		cout << "Created new user named: " << userName << " with Genre algorithm" << endl;
 		complete();
 		return;
 	}

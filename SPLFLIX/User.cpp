@@ -67,6 +67,14 @@ void RerunRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 		history.push_back(w);
 };
 
+void RerunRecommenderUser::setCurrentMovie(int count) {
+	currentMovie = count;
+}
+
+int RerunRecommenderUser::getCurrentMovie() {
+	return currentMovie;
+}
+
 Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
 	if (get_history().size() == 0)
 	{

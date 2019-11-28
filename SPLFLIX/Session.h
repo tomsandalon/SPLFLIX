@@ -23,7 +23,7 @@ public:
 	void DisplayMenu();  // newww
 	std::vector<Watchable*> get_content() const; //new
 	std::string getLastActionInput() const; //new
-	std::unordered_map<std::string, User*> getUserMap() const; //new
+	std::unordered_map<std::string, User*>& getUserMap(); //new
 	void changeActiveUser(User*); //new 
 	User* getActiveUser() const; //new
 	void watchRecommendationFromAction(Watchable*); //new
