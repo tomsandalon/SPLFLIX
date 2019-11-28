@@ -11,13 +11,6 @@ using namespace std;
 	Watchable::Watchable(long id, int length, const std::vector<std::string>& tags) : id(id), length(length), tags(tags) {}
     Watchable::Watchable(const Watchable& other) : id(other.id), length(other.length), tags(other.tags) {}
 
-	//Watchable& operator=(const Watchable& other) {
-	//	id = other.id;
-		//_length = other._length;;
-		//_tags = other._tags;
-		//return *this;
-	//}
-
 	Watchable::~Watchable() {// CHECK THEAT OU
 
 	}
@@ -40,10 +33,9 @@ using namespace std;
 
 	string Movie::toString() const {
 		string tags = "";
-		for (int size_t = 0; size_t < get_tags().size(); size_t++) {
-			tags = tags + get_tags()[size_t]  ;
-			if (size_t != (get_tags().size()-1))
-			{
+		for (size_t i = 0; i < get_tags().size(); i++) {
+			tags = tags + get_tags()[i]  ;
+			if (i != (get_tags().size()-1)){
 			tags = tags + ",";
 			}
 		}
@@ -51,23 +43,20 @@ using namespace std;
 	}
 	
 
-
 	Watchable* Movie::getNextWatchable(Session &s) const {
 		return (*s.getActiveUser()).getRecommendation(s);
 	}  
 
 
-
 	Episode::Episode(long id, const std::string& seriesName, int length, int season, int episode, std::vector<std::string>& tags) : Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode), nextEpisodeId(-1) {}
-	
 
 	std::string Episode::toString() const{
 		string episodeN;
 		string seasonN;
 		string tags = "";
-		for (int size_t = 0; size_t < get_tags().size(); size_t) {
-			tags = tags + get_tags()[size_t];
-			if (size_t != (get_tags().size() - 1))
+		for (size_t i = 0; i < get_tags().size(); i++) {
+			tags = tags + get_tags()[i];
+			if (i != (get_tags().size() - 1))
 			{
 				tags = tags + ",";
 			}
@@ -93,9 +82,9 @@ using namespace std;
 	Watchable* Episode::getNextWatchable(Session &s) const {
 		if (nextEpisodeId == -1)
 			return (*s.getActiveUser()).getRecommendation(s);
-		for (int size_t = 0; size_t <= s.get_content().size(); size_t++) {
-			if ((*s.get_content()[size_t]).get_id() == nextEpisodeId)  {
-				return s.get_content()[size_t];
+		for (size_t i = 0; i <= s.get_content().size(); i++) {
+			if ((*s.get_content()[i]).get_id() == nextEpisodeId)  {
+				return s.get_content()[i];
 			}
 		}
 		return (*s.getActiveUser()).getRecommendation(s);
