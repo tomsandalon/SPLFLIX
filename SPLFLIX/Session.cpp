@@ -42,6 +42,7 @@ void Session::start() {
 		DisplayMenu();
 
 		cout << endl << "\t\t\t\tPlease select an option: ";
+		
 
 		getline(cin, userInput);
 
@@ -49,6 +50,8 @@ void Session::start() {
 			PrintContentList* a = new PrintContentList();
 			a->act(*this);
 			a->toString();
+			actionsLog.push_back(a);
+			//cout << "jjjj" << actionsLog[0]->toString();
 			//delete a;
 			system("PAUSE");
 			system("CLS");
@@ -63,10 +66,10 @@ void Session::start() {
 			system("CLS");
 		}
 		else if (userInput.compare("log") == 0) {
-			lastActionInput = userInput;
-			PrintActionsLog* a = new PrintActionsLog();
-			a->act(*this);
-			a->toString();
+			//lastActionInput = userInput;
+			//PrintActionsLog* a = new PrintActionsLog();
+			//a->act(*this);
+			//a->toString();
 			system("PAUSE");
 			system("CLS");
 			

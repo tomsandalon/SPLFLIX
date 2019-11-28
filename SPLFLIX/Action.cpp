@@ -4,7 +4,6 @@ using namespace std;
 BaseAction::BaseAction() : status(PENDING), errorMsg("") {};
 
 ActionStatus BaseAction::getStatus() const { return status; };
-
 void BaseAction::complete() { status = COMPLETED; }; //change status to complete
 
 void BaseAction::error(const string& _errorMsg) { status = ERROR; errorMsg = _errorMsg; }; //change status to error and log the error
@@ -445,6 +444,7 @@ void PrintActionsLog::act(Session& sess) { //print the action log
 	complete();
 	return;
 }
+
 
 
 

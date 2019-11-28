@@ -11,12 +11,12 @@ using namespace std;
 	Watchable::Watchable(long id, int length, const std::vector<std::string>& tags) : id(id), length(length), tags(tags) {}
     Watchable::Watchable(const Watchable& other) : id(other.id), length(other.length), tags(other.tags) {}
 
-	/*Watchable& operator=(const Watchable& other) {
-		_id = other._id;
-		_length = other._length;;
-		_tags = other._tags;
-		return *this;
-	}*/
+	//Watchable& operator=(const Watchable& other) {
+	//	id = other.id;
+		//_length = other._length;;
+		//_tags = other._tags;
+		//return *this;
+	//}
 
 	Watchable::~Watchable() {// CHECK THEAT OU
 
