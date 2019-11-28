@@ -49,7 +49,7 @@ void Session::start() {
 			PrintContentList* a = new PrintContentList();
 			a->act(*this);
 			a->toString();
-			delete a;
+			//delete a;
 			system("PAUSE");
 			system("CLS");
 		}
@@ -61,6 +61,20 @@ void Session::start() {
 			//TODO: add it actionsLog
 			system("PAUSE");
 			system("CLS");
+		}
+		else if (userInput.compare("log") == 0) {
+			lastActionInput = userInput;
+			PrintActionsLog* a = new PrintActionsLog();
+			a->act(*this);
+			a->toString();
+			system("PAUSE");
+			system("CLS");
+			
+			
+			
+			
+			;
+			break;
 		}
 		else if (userInput.length() == 4 && userInput.substr(0, 4).compare("exit") == 0) {
 			cout << "\nexit\n" << endl;
@@ -137,6 +151,14 @@ json Session::getJsonData(const std::string& configFilePath) {
 				Episode* watchS = new Episode(id_count, aaa["tv_series"][j]["name"], aaa["tv_series"][j]["episode_length"], i + 1, k + 1, vect2);
 				id_count++;
 				content.push_back(watchS);
+
+				if ((aaa["tv_series"][j]["seasons"][i]  == k +1) && (i == aaa["tv_series"][j]["seasons"].size() - 1)) {
+					
+						watchS->set_Next_Episode(-1);
+				}
+				else
+						watchS->set_Next_Episode(id_count);
+		
 			}
 		}
 	}
@@ -168,8 +190,8 @@ void Session::DisplayMenu()
 		<< "\t\t\t\t                           " << endl
 		<< "\t\t\t\t===========================" << endl
 		<< "\t\t\t\t\tMAIN MENU: " << endl
-		<< "\t\t\t\t1--> create user" << endl
-		<< "\t\t\t\t2--> change active user" << endl
+		<< "\t\t\t\t1--> content" << endl
+		<< "\t\t\t\t2--> watch" << endl
 		<< "\t\t\t\t3--> delete user" << endl
 		<< "\t\t\t\t4--> exit" << endl;
 
