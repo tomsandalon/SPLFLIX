@@ -75,18 +75,6 @@ void Session::start() {
 			//system("PAUSE");
 			//system("CLS");
 		}
-		else if (userInput.substr(0, 10).compare("createuser") == 0) {
-			lastActionInput = userInput;
-			BaseAction* a = new CreateUser();
-			a->act(*this);
-			actionsLog.push_back(a);
-		}
-		else if (userInput.substr(0, 10).compare("createuser") == 0) {
-			lastActionInput = userInput;
-			BaseAction* a = new CreateUser();
-			a->act(*this);
-			actionsLog.push_back(a);
-		}
 		else if (userInput.length() == 4 && userInput.substr(0, 4).compare("exit") == 0) {
 			lastActionInput = userInput;
 			BaseAction* a = new Exit();
