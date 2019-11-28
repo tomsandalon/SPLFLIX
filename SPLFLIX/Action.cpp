@@ -157,7 +157,7 @@ void DeleteUser::act(Session& sess) {
 		return;
 	}
 	string userName = getWord(1, sess.getLastActionInput());
-	if (sess.getActiveUser()->getName() == userName) //if the username to delete is the active username
+	if (sess.getActiveUser()->getName().compare(userName) == 0) //if the username to delete is the active username
 	{
 		error("Cant delete current active user");
 		cout << getErrorMsg() << endl;

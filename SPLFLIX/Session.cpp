@@ -14,6 +14,8 @@ using json = nlohmann::json;
 using namespace std;
 
 Session::Session(const std::string& configFilePath) {
+	activeUser = new LengthRecommenderUser("default");
+	userMap[activeUser->getName()] = activeUser;
 	getJsonData(configFilePath);
 }
 
@@ -28,8 +30,6 @@ void Session::start() {
 	cout << "SPLFLIX is now on!";
 	run = true;
 
-	//and initializing a default watching user
-	activeUser = &LengthRecommenderUser("default");
 
 	/* wait for the user to enter an action to execute.
 	After each executed action, it should wait for the next action.
