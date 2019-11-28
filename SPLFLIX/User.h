@@ -60,7 +60,7 @@ public:
 	virtual std::string algoType() const;
 	
 private:
-	std::vector<std::tuple<int, std::string>*> tagCounter;
+	std::vector<std::tuple<int, std::string>> tagCounter;
 	virtual void addWatched(Watchable*);
 	virtual void sortTags();
 };

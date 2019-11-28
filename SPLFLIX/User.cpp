@@ -88,7 +88,7 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
 string RerunRecommenderUser::algoType() const { return "rer"; }; 
 
 void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
-	if (!already_watched(w))
+	if (already_watched(w))
 	{
 		return;
 	}
@@ -99,16 +99,16 @@ void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 	{
 		found = false;
 		for (size_t j = 0; j < tagCounter.size(); j++)
-			if (get<1>(*tagCounter[j]).compare(w->get_tags()[i]) == 0)
+			if (get<1>(tagCounter[j]).compare(w->get_tags()[i]) == 0)
 			{
-				get<0>(*tagCounter[j]) += 1;
+				get<0>(tagCounter[j]) += 1;
 				found = true;
 				j = tagCounter.size();
 			}
 		if (!found)
 		{
-			tuple<int, string>* t = new tuple<int, string>(1, w->get_tags()[i]);
-			tagCounter.push_back(t);
+			//tuple<int, string>(1, w->get_tags()[i]);
+			tagCounter.push_back(tuple<int, string>(1, w->get_tags()[i]));
 		}
 	}
 	sortTags();
@@ -123,14 +123,14 @@ void GenreRecommenderUser::sortTags() {
 		swapped = false;
 		for (size_t j = 0; j < tagCounter.size() - i - 1; j++)
 		{
-			if (get<0>(*tagCounter[j]) > get<0>(*tagCounter[j + 1])) {
+			if (get<0>(tagCounter[j]) > get<0>(tagCounter[j + 1])) {
 				swap(tagCounter[j], tagCounter[j + 1]);
 				swapped = true;
 			}
-			else if (get<0>(*tagCounter[j]) > get<0>(*tagCounter[j + 1]))
+			else if (get<0>(tagCounter[j]) == get<0>(tagCounter[j + 1]))
 			{
-				string a = get<1>(*tagCounter[j]);
-				string b = get<1>(*tagCounter[j + 1]);
+				string a = get<1>(tagCounter[j]);
+				string b = get<1>(tagCounter[j + 1]);
 				for_each(a.begin(), a.end(), [](char& c) {	//change a to lower string
 					c = ::tolower(c);
 					});
@@ -155,10 +155,12 @@ Watchable* GenreRecommenderUser::getRecommendation(Session& s) { //get the next 
 	{
 		for (size_t j = 0; j < s.get_content().size(); j++)
 		{
-			for (size_t k = 0; k < s.get_content()[i]->get_tags()[k].size(); k++)
-			{
-				if ((get<1>(*tagCounter[i]).compare(s.get_content()[j]->get_tags()[k]) == 0) && (!already_watched(s.get_content()[i])))
-					return s.get_content()[j];
+			if (!already_watched(s.get_content()[j])) {
+				for (size_t k = 0; k < s.get_content()[j]->get_tags().size(); k++)
+				{
+					if ((get<1>(tagCounter[i]).compare(s.get_content()[j]->get_tags()[k]) == 0))
+						return s.get_content()[j];
+				}
 			}
 		}
 	}
