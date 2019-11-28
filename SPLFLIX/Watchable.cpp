@@ -40,9 +40,9 @@ using namespace std;
 
 	string Movie::toString() const {
 		string tags = "";
-		for (int i = 0; i < get_tags().size(); i++) {
-			tags = tags + get_tags()[i]  ;
-			if (i != (get_tags().size()-1))
+		for (int size_t = 0; size_t < get_tags().size(); size_t++) {
+			tags = tags + get_tags()[size_t]  ;
+			if (size_t != (get_tags().size()-1))
 			{
 			tags = tags + ",";
 			}
@@ -58,16 +58,16 @@ using namespace std;
 
 
 
-	Episode::Episode(long id, const std::string& seriesName, int length, int season, int episode,  std::vector<std::string>& tags) : Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode)
-	{}
+	Episode::Episode(long id, const std::string& seriesName, int length, int season, int episode, std::vector<std::string>& tags) : Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode), nextEpisodeId(-1) {}
+	
 
 	std::string Episode::toString() const{
 		string episodeN;
 		string seasonN;
 		string tags = "";
-		for (int i = 0; i < get_tags().size(); i++) {
-			tags = tags + get_tags()[i];
-			if (i != (get_tags().size() - 1))
+		for (int size_t = 0; size_t < get_tags().size(); size_t) {
+			tags = tags + get_tags()[size_t];
+			if (size_t != (get_tags().size() - 1))
 			{
 				tags = tags + ",";
 			}
@@ -93,9 +93,9 @@ using namespace std;
 	Watchable* Episode::getNextWatchable(Session &s) const {
 		if (nextEpisodeId == -1)
 			return (*s.getActiveUser()).getRecommendation(s);
-		for (int i = 0; i <= s.get_content().size(); i++) {
-			if ((*s.get_content()[i]).get_id() == nextEpisodeId)  {
-				return s.get_content()[i];
+		for (int size_t = 0; size_t <= s.get_content().size(); size_t++) {
+			if ((*s.get_content()[size_t]).get_id() == nextEpisodeId)  {
+				return s.get_content()[size_t];
 			}
 		}
 		return (*s.getActiveUser()).getRecommendation(s);
