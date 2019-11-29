@@ -11,8 +11,7 @@ using namespace std;
 	Watchable::Watchable(long id, int length, const std::vector<std::string>& tags) : id(id), length(length), tags(tags) {}
     Watchable::Watchable(const Watchable& other) : id(other.id), length(other.length), tags(other.tags) {}
 
-	Watchable::~Watchable() {// CHECK THEAT OU
-
+	Watchable::~Watchable() {
 	}
 	void Episode::set_Next_Episode(int i){
 		nextEpisodeId = i;
@@ -40,6 +39,7 @@ using namespace std;
 			}
 		}
 		return "id:" + to_string(get_id()) + " " +  name+ " "  +  "minutes:" +to_string(get_length())  + " " +"[" + tags + "]";
+
 	}
 	
 
