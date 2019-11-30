@@ -32,7 +32,7 @@ using namespace std;
 
 
 
-	string Movie::toString() const {
+	string Movie::toString(bool shortValue) const {
 		string tags = "";
 		for (size_t i = 0; i < get_tags().size(); i++) {
 			tags = tags + get_tags()[i]  ;
@@ -40,7 +40,14 @@ using namespace std;
 			tags = tags + ",";
 			}
 		}
-		return "id:" + to_string(get_id()) + " " +  name+ " "  +  "minutes:" +to_string(get_length())  + " " +"[" + tags + "]";
+
+
+		string res = name;
+		if(shortValue){
+			return res;
+		} else {
+			return res + " "  + to_string(get_length())  + " minutes " +"[" + tags + "]";
+		}
 
 	}
 	
@@ -52,7 +59,7 @@ using namespace std;
 
 	Episode::Episode(long id, const std::string& seriesName, int length, int season, int episode, std::vector<std::string>& tags) : Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode), nextEpisodeId(-1) {}
 
-	std::string Episode::toString() const{
+	std::string Episode::toString(bool shortValue) const{
 		string episodeN;
 		string seasonN;
 		string tags = "";
@@ -71,13 +78,13 @@ using namespace std;
 			seasonN = to_string(season);
 		else
 			seasonN = "0" + to_string(season);
-	
+		string res =  seriesName + " " + "S" + seasonN + "E" + episodeN;
+		if(shortValue){
+			return res;
+		} else {
+			return res + " " + to_string(get_length()) + " minutes " + "[" + tags + "]";
+		}
 
-
-		
-		//removed idNext from toString
-		//return "idNext:" + to_string(nextEpisodeId) + "id:" + to_string(get_id()) + " " + seriesName + " " +"S"+ seasonN + "E" + episodeN + " "  + "minutes:" + to_string(get_length()) + " "+"[" + tags + "]";
-		return "id:" + to_string(get_id()) + " " + seriesName + " " + "S" + seasonN + "E" + episodeN + " " + "minutes:" + to_string(get_length()) + " " + "[" + tags + "]";
 
 	}
 

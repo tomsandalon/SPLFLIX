@@ -71,7 +71,6 @@ void CreateUser::act(Session& sess) {
 	{
 		u = new LengthRecommenderUser(userName);
 		sess.addUserToMap(u);
-		cout << "Created new user named: " << userName << " with Length algorithm" <<endl;
 		complete();
 		return;
 	}
@@ -79,7 +78,6 @@ void CreateUser::act(Session& sess) {
 	{
 		u = new RerunRecommenderUser(userName);
 		sess.addUserToMap(u);
-		cout << "Created new user named: " << userName << " with Rerun algorithm" << endl;
 		complete();
 		return;
 	}
@@ -87,7 +85,6 @@ void CreateUser::act(Session& sess) {
 	{
 		u = new GenreRecommenderUser(userName);
 		sess.addUserToMap(u);
-		cout << "Created new user named: " << userName << " with Genre algorithm" << endl;
 		complete();
 		return;
 	}
@@ -128,7 +125,6 @@ void ChangeActiveUser::act(Session& sess) {
 	else
 	{
 		sess.changeActiveUser(userName);
-		cout << "Active user was changed to " << userName << endl;
 		complete();
 		return;
 	}
@@ -279,8 +275,7 @@ void PrintContentList::act(Session& sess) {
 	}
 	for (size_t i = 0; i < sess.get_content().size(); i++) //print the content
 	{
-		cout << (i + 1) << ". " << sess.get_content()[i]->toString()  << endl;
-		//cout << (i +1) << ". " << sess.get_content()[i]->toString() << " " << sess.get_content()[i]->get_length() << " minutes " << PrintContentList::tagsToString(sess.get_content()[i]->get_tags()) << endl;
+		cout << (i + 1) << ". " << sess.get_content()[i]->toString(false)  << endl;
 	}
 	complete();
 	return;
@@ -311,7 +306,7 @@ void PrintWatchHistory::act(Session& sess) {
 	cout << "Watch history for " << sess.getActiveUser()->getName() << endl;
 	for (size_t i = 0; i < sess.getActiveUser()->get_history().size(); i++) //print the history according to the format
 	{
-		cout << (i+1) << ". " << sess.getActiveUser()->get_history()[i]->toString() << endl;
+		cout << (i+1) << ". " << sess.getActiveUser()->get_history()[i]->toString(true) << endl;
 	}
 	complete();
 	return;
@@ -366,7 +361,7 @@ void Watch::act(Session& sess) {
 		cout << getErrorMsg() << endl;
 		return;
 	}
-	cout << "Watching " << sess.get_content()[id]->toString() << endl;
+	cout << "Watching " << sess.get_content()[id]->toString(true) << endl;
 	sess.addWatchedToUser(sess.getActiveUser(), sess.get_content()[id]);
 	//sess.getActiveUser()->addWatched(sess.get_content()[id]); //watch the watchable
 	Watchable* w = sess.get_content()[id]->getNextWatchable(sess); //get the next recommendation
@@ -376,7 +371,7 @@ void Watch::act(Session& sess) {
 		cout << "No more content to recommend" << endl;
 		return;
 	}
-	cout << "We recommend watching " << w->toString() << ", continue watching? [y/n]" << endl;
+	cout << "We recommend watching " << w->toString(true) << ", continue watching? [y/n]" << endl;
 	char c = 'a';
 	while (c != 'y' && c != 'n') //dont stop until the user inputs a proper char
 	{

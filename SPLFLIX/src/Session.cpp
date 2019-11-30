@@ -104,7 +104,7 @@ void Session::steal(Session &other){
 
 
 void Session::start() {
-	cout << "SPLFLIX is now on!";
+	cout << "SPLFLIX is now on!"<< endl;
 	run = true;
 
 
