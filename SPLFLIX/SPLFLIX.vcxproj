@@ -18,6 +18,21 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Action.h" />
+    <ClInclude Include="include\json.hpp" />
+    <ClInclude Include="include\Session.h" />
+    <ClInclude Include="include\User.h" />
+    <ClInclude Include="include\Watchable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Action.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Main2.cpp" />
+    <ClCompile Include="src\Session.cpp" />
+    <ClCompile Include="src\User.cpp" />
+    <ClCompile Include="src\Watchable.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{BBCC50D7-F58C-4C70-B03F-7CC58FD612A3}</ProjectGuid>
@@ -76,6 +91,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\tomsa\source\repos\SPLFLIX\SPLFLIX\src;C:\Users\tomsa\source\repos\SPLFLIX\SPLFLIX\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,23 +138,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Action.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="User.cpp" />
-    <ClCompile Include="Watchable.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Action.h" />
-    <ClInclude Include="json.hpp" />
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="User.h" />
-    <ClInclude Include="Watchable.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="config1.json" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
