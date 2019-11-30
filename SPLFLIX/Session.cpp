@@ -9,21 +9,98 @@
 #include "Action.h"
 
 
-using json = nlohmann::json;
-
 using namespace std;
 
 Session::Session(const std::string& configFilePath) {
 	activeUser = new LengthRecommenderUser("default");
 	userMap[activeUser->getName()] = activeUser;
-	getJsonData(configFilePath);
+	setJsonData(configFilePath);
 }
 
 
 
-Session::~Session() {// CHECK THEAT OU
-	//delete activeUser;
+Session::~Session() {
+	cout << "session delete" << endl;
+	clean();
 }
+
+void Session::clean() {
+	cout << "session delete" << endl;
+	delete activeUser;
+	for (int i = 0; i < content.size(); i++)
+		while (content[i] != nullptr)
+			delete content[i];
+	for (auto it = userMap.begin(); it != userMap.end(); ++it)
+		while (it->second != nullptr)
+			delete it->second;
+	for (size_t i = 0; i < actionsLog.size(); i++)
+		delete actionsLog[i];
+
+}
+
+Session::Session(const Session& other) {
+	copy(other);
+}
+
+Session& Session::operator=(const Session& other) {
+		if (&other != this) {
+			clean();
+				copy(other);
+		}
+		return *this;
+	}
+
+Session::Session(Session&& other) {
+	steal(other);
+}
+
+Session& Session :: operator=( Session&& other) {
+	if (&other != this) {
+		clean();
+		steal(other);
+	}
+	return *this;
+}
+
+
+
+ void Session::copy(const Session& other) {	
+	/*content =other.content;
+	for (size_t i = 0; i < content.size(); i++) {
+		if (other.content[i]->isMovie()) {
+			content[i] = new Movie(other.content[i]);
+		}
+		else {
+			content[i] = new Episode(other.content[i]);
+		}
+	}
+
+	actionsLog = other.actionsLog;
+	userMap = other.userMap;
+	lastActionInput = other.lastActionInput;*/
+}
+
+void Session::steal(Session &other){
+	activeUser = other.activeUser;
+	other.activeUser = nullptr;
+	content = other.content;
+	actionsLog = other.actionsLog;
+	userMap = other.userMap;
+	lastActionInput = other.lastActionInput;
+	other.content.clear();
+	other.actionsLog.clear();
+	other.userMap.clear();
+	other.lastActionInput = "";
+}
+
+
+
+
+
+
+
+
+
 
 
 void Session::start() {
@@ -31,100 +108,64 @@ void Session::start() {
 	run = true;
 
 
-	/* wait for the user to enter an action to execute.
-	After each executed action, it should wait for the next action.
-		The loop ends when the user enters the action "exit". (See actions in part 3.4)*/
-
 	string userInput;
 
 	while (run) {
-
-		DisplayMenu();
-
-		cout << endl << "\t\t\t\tPlease select an option: ";
-
-
 		getline(cin, userInput);
 
 		if (userInput.compare("content") == 0) {
-			BaseAction* a = new PrintContentList();
-			a->act(*this);
-			//a->toString();
-			actionsLog.push_back(a);
-			//cout << "jjjj" << actionsLog[0]->toString();
-			//delete a;
-			//system("PAUSE");
-			//system("CLS");
+			BaseAction* action = new PrintContentList();
+			action->act(*this);
+			actionsLog.push_back(action);
 		}
 		else if (userInput.length() >= 7 && userInput.substr(0, 6).compare("watch ") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new Watch();
-			a->act(*this);
-			//a->toString();
-			actionsLog.push_back(a);
-			//TODO: add it actionsLog
-			//system("PAUSE");
-			//system("CLS");
+			BaseAction* action = new Watch();
+			action->act(*this);
+			actionsLog.push_back(action);
 		}
 		else if (userInput.compare("log") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new PrintActionsLog();
-			a->act(*this);
-			//a->toString();
-			actionsLog.push_back(a);
-			//system("PAUSE");
-			//system("CLS");
-			//break;
+			BaseAction* action = new PrintActionsLog();
+			action->act(*this);
+			actionsLog.push_back(action);
 		}
 		else if (userInput.compare("watchhist") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new PrintWatchHistory();
-			a->act(*this);
-			//a->toString();
-			actionsLog.push_back(a);
-			//system("PAUSE");
-			//system("CLS");
-			//break;
+			BaseAction* action = new PrintWatchHistory();
+			action->act(*this);
+			actionsLog.push_back(action);
 		}
 		else if (userInput.length() > 9 && userInput.substr(0, 8).compare("dupuser ") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new DuplicateUser();
-			actionsLog.push_back(a);
-			a->act(*this);
-			//a->toString();
-			//system("PAUSE");
-			//system("CLS");
-			//break;
+			BaseAction* action = new DuplicateUser();
+			actionsLog.push_back(action);
+			action->act(*this);
 		}
 		else if (userInput.length() > 9 && userInput.substr(0, 11).compare("createuser ") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new CreateUser();
-			actionsLog.push_back(a);
-			a->act(*this);
+			BaseAction* action = new CreateUser();
+			actionsLog.push_back(action);
+			action->act(*this);
 		}
 		else if (userInput.length() > 9 && userInput.substr(0, 11).compare("changeuser ") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new ChangeActiveUser();
-			actionsLog.push_back(a);
-			a->act(*this);
+			BaseAction* action = new ChangeActiveUser();
+			actionsLog.push_back(action);
+			action->act(*this);
 		}
 		else if (userInput.length() > 9 && userInput.substr(0, 11).compare("deleteuser ") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new DeleteUser();
-			actionsLog.push_back(a);
-			a->act(*this);
+			BaseAction* action = new DeleteUser();
+			actionsLog.push_back(action);
+			action->act(*this);
 		}
 		else if (userInput.length() == 4 && userInput.substr(0, 4).compare("exit") == 0) {
 			lastActionInput = userInput;
-			BaseAction* a = new Exit();
-			a->act(*this);
-			actionsLog.push_back(a);
+			BaseAction* action = new Exit();
+			action->act(*this);
+			actionsLog.push_back(action);
 
-		}
-		else {
-			cout << "Please choose a valid option:" << endl
-				<< "=============================" << endl;
-			cin.ignore();
 		}
 	}
 
@@ -163,37 +204,34 @@ std::vector<BaseAction*> Session::getActionLog() const {
 
 
 
-json Session::getJsonData(const std::string& configFilePath) {
-
-
-	json aaa;
+void Session::setJsonData(const std::string& configFilePath) {
+	json jsonData;
 
 	std::ifstream watchableFile(configFilePath);
-	watchableFile >> aaa;
+	watchableFile >> jsonData;
 
 
 
 	int id_count = 1;
-	for (int i = 0; i < aaa["movies"].size(); i++) {
-		vector<string> vect = aaa["movies"][i]["tags"];
-		Movie* watchC = new Movie(id_count, aaa["movies"][i]["name"], aaa["movies"][i]["length"], vect);
+	for (int i = 0; i < jsonData["movies"].size(); i++) {
+
+		vector<string> vect = jsonData["movies"][i]["tags"];
+		Movie* watchC = new Movie(id_count, jsonData["movies"][i]["name"], jsonData["movies"][i]["length"], vect);
 		id_count++;
 		content.push_back(watchC);
-		//cout << vect[0] + "kkkk" << endl;
 	}
 
 
-	for (int j = 0; j < aaa["tv_series"].size(); j++) {
-		//cout << "jjjj";
-		vector<string> vect2 = aaa["tv_series"][j]["tags"];
-		for (int i = 0; i < aaa["tv_series"][j]["seasons"].size(); i++) {
-			for (int k = 0; k < aaa["tv_series"][j]["seasons"][i]; k++) {
+	for (int j = 0; j < jsonData["tv_series"].size(); j++) {
+		vector<string> vect2 = jsonData["tv_series"][j]["tags"];
+		for (int i = 0; i < jsonData["tv_series"][j]["seasons"].size(); i++) {
+			for (int k = 0; k < jsonData["tv_series"][j]["seasons"][i]; k++) {
 
-				Episode* watchS = new Episode(id_count, aaa["tv_series"][j]["name"], aaa["tv_series"][j]["episode_length"], i + 1, k + 1, vect2);
+				Episode* watchS = new Episode(id_count, jsonData["tv_series"][j]["name"], jsonData["tv_series"][j]["episode_length"], i + 1, k + 1, vect2);
 				id_count++;
 				content.push_back(watchS);
 
-				if ((aaa["tv_series"][j]["seasons"][i] == k + 1) && (i == aaa["tv_series"][j]["seasons"].size() - 1)) {
+				if ((jsonData["tv_series"][j]["seasons"][i] == k + 1) && (i == jsonData["tv_series"][j]["seasons"].size() - 1)) {
 
 					watchS->set_Next_Episode(-1);
 				}
@@ -203,40 +241,9 @@ json Session::getJsonData(const std::string& configFilePath) {
 			}
 		}
 	}
-
-	/**
-	cout << (*content[0]).toString() << endl;
-	cout << (*content[1]).toString() << endl;
-	cout << (*content[2]).toString() << endl;
-	cout << (*content[3]).toString() << endl;
-
-	cout << (*content[4]).toString() << endl;
-	cout << (*content[5]).toString() << endl;
-	cout << (*content[6]).toString() << endl;
-	*/
-
-
-
-	return {};
 };
 
-void Session::DisplayMenu()
-{
 
-
-	cout << endl << "\t\t\t\t  *********  " << endl
-		<< "\t\t\t\t||        SPLFLIX          ||" << endl
-		<< "\t\t\t\t||       is now on!        ||" << endl
-		<< "\t\t\t\t  *********  " << endl << endl
-		<< "\t\t\t\t                           " << endl
-		<< "\t\t\t\t===========================" << endl
-		<< "\t\t\t\t\tMAIN MENU: " << endl
-		<< "\t\t\t\t1--> content" << endl
-		<< "\t\t\t\t2--> watch" << endl
-		<< "\t\t\t\t3--> delete user" << endl
-		<< "\t\t\t\t4--> exit" << endl;
-
-}
 void Session::setRunToFalse() {
 	run = false;
 }

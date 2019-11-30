@@ -12,6 +12,7 @@ using namespace std;
     Watchable::Watchable(const Watchable& other) : id(other.id), length(other.length), tags(other.tags) {}
 
 	Watchable::~Watchable() {
+		cout << "watchable delete" << endl;
 	}
 	void Episode::set_Next_Episode(int i){
 		nextEpisodeId = i;
@@ -28,6 +29,7 @@ using namespace std;
 
 
 	Movie::Movie(long id, const std::string& name, int length,  std::vector<std::string>& tags) : Watchable(id, length, tags), name(name) {}
+
 
 
 	string Movie::toString() const {
@@ -78,6 +80,8 @@ using namespace std;
 		return "id:" + to_string(get_id()) + " " + seriesName + " " + "S" + seasonN + "E" + episodeN + " " + "minutes:" + to_string(get_length()) + " " + "[" + tags + "]";
 
 	}
+
+
 
 	Watchable* Episode::getNextWatchable(Session &s) const {
 		if (nextEpisodeId == -1)
