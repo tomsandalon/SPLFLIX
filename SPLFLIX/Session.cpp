@@ -179,14 +179,10 @@ std::string Session::getLastActionInput() const {
 	return lastActionInput;
 }
 
-std::unordered_map<std::string, User*>& Session::getUserMap() {
-	return userMap;
-}
 
-void Session::changeActiveUser(User* user) {
-	activeUser = user;
+void Session::changeActiveUser(string user) {
+	activeUser = userMap.at(user);
 }
-
 
 User* Session::getActiveUser() const {
 	return activeUser;
@@ -213,7 +209,7 @@ void Session::setJsonData(const std::string& configFilePath) {
 
 
 	int id_count = 1;
-	for (int i = 0; i < jsonData["movies"].size(); i++) {
+	for (size_t i = 0; i < jsonData["movies"].size(); i++) {
 
 		vector<string> vect = jsonData["movies"][i]["tags"];
 		Movie* watchC = new Movie(id_count, jsonData["movies"][i]["name"], jsonData["movies"][i]["length"], vect);
@@ -222,10 +218,10 @@ void Session::setJsonData(const std::string& configFilePath) {
 	}
 
 
-	for (int j = 0; j < jsonData["tv_series"].size(); j++) {
+	for (size_t j = 0; j < jsonData["tv_series"].size(); j++) {
 		vector<string> vect2 = jsonData["tv_series"][j]["tags"];
-		for (int i = 0; i < jsonData["tv_series"][j]["seasons"].size(); i++) {
-			for (int k = 0; k < jsonData["tv_series"][j]["seasons"][i]; k++) {
+		for (size_t i = 0; i < jsonData["tv_series"][j]["seasons"].size(); i++) {
+			for (size_t k = 0; k < jsonData["tv_series"][j]["seasons"][i]; k++) {
 
 				Episode* watchS = new Episode(id_count, jsonData["tv_series"][j]["name"], jsonData["tv_series"][j]["episode_length"], i + 1, k + 1, vect2);
 				id_count++;
@@ -246,4 +242,29 @@ void Session::setJsonData(const std::string& configFilePath) {
 
 void Session::setRunToFalse() {
 	run = false;
+}
+
+bool Session::userExists(string userName) const {
+	return userMap.count(userName) > 0;
+}
+
+User* Session::getUserByName(string userName) const {
+	if (userExists(userName))
+		return nullptr;
+	else
+		return userMap.at(userName);
+}
+
+void Session::addUserToMap(User* u) {
+	userMap[u->getName()] = u;
+}
+
+void Session::deleteUser(User* u) {
+	userMap[u->getName()] = nullptr; //apply null pointer
+	userMap.erase(u->getName()); //delete the slot in the hash table
+	u->~User(); //delete the user
+}
+
+void Session::addWatchedToUser(User* u, Watchable* w) {
+	u->addWatched(w);
 }

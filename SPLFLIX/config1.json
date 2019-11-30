@@ -1,25 +1,33 @@
 {
   "movies": [
     {
-      "name" : "The Shawshank Redemption",
-      "length": 142,
-      "tags": ["Drama"
+      "name": "Scott Pilgrim vs. the World",
+      "length": 112,
+      "tags": [
+        "Action",
+        "Comedy",
+        "Fantasy",
+        "Romance"
       ]
     },
     {
-      "name" : "The Godfather",
-      "length": 175,
-      "tags": ["Drama",
-               "Crime"
+      "name": "Finding Nemo",
+      "length": 100,
+      "tags": [
+        "Animation",
+        "Adventure",
+        "Family",
+        "Sea"
       ]
     },
     {
-      "name" : "The Dark Knight",
+      "name": "The Dark Knight",
       "length": 152,
-      "tags": ["Action",
-               "Crime",
-               "Drama",
-               "Thriller"
+      "tags": [
+        "Action",
+        "Crime",
+        "Drama",
+        "Thriller"
       ]
     },
     {
@@ -29,30 +37,20 @@
         "Crime",
         "Drama"
       ]
-    },
-    {
-      "name": "Crim stuff 1",
-      "length": 154,
-      "tags": [
-        "Crime"
-      ]
     }
   ],
-  "tv_series":
-  [
+  "tv_series": [
     {
-      "name": "Game Of Thrones",
-      "episode_length": 60,
-      "seasons": [10, 10, 10, 10],
-      "tags": ["Fantasy",
-               "Drama"]
+      "name": "The End of the F***ing World ",
+      "episode_length": 25,
+      "seasons": [ 8, 8 ],
+      "tags": [ "Comedy", "Crime", "Drama" ]
     },
     {
-      "name": "How I Met Your Mother",
-      "episode_length": 22,
-      "seasons": [22, 22, 20, 24, 24, 24, 24, 24, 24, 24],
-      "tags": ["Comedy",
-               "Romantic"]
+      "name": "Blue Planet II",
+      "episode_length": 45,
+      "seasons": [ 8 ],
+      "tags": [ "Documentary", "Sea" ]
     }
   ]
 }

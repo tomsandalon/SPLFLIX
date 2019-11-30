@@ -61,7 +61,7 @@ void CreateUser::act(Session& sess) {
 	}
 	string userName = getWord(1, sess.getLastActionInput());
 	string algo = getWord(2, sess.getLastActionInput());
-	if (sess.getUserMap().count(userName) > 0) //if the username is available
+	if (sess.userExists(userName)) //if the username is available
 	{
 		error("This username is already taken");
 		cout << getErrorMsg() << endl;
@@ -70,7 +70,7 @@ void CreateUser::act(Session& sess) {
 	if (algo == "len") //length algo
 	{
 		u = new LengthRecommenderUser(userName);
-		sess.getUserMap()[userName] = u;
+		sess.addUserToMap(u);
 		cout << "Created new user named: " << userName << " with Length algorithm" <<endl;
 		complete();
 		return;
@@ -78,7 +78,7 @@ void CreateUser::act(Session& sess) {
 	if (algo == "rer") //rerun algo
 	{
 		u = new RerunRecommenderUser(userName);
-		sess.getUserMap()[userName] = u;
+		sess.addUserToMap(u);
 		cout << "Created new user named: " << userName << " with Rerun algorithm" << endl;
 		complete();
 		return;
@@ -86,7 +86,7 @@ void CreateUser::act(Session& sess) {
 	if (algo == "gen") //genre algo
 	{
 		u = new GenreRecommenderUser(userName);
-		sess.getUserMap()[userName] = u;
+		sess.addUserToMap(u);
 		cout << "Created new user named: " << userName << " with Genre algorithm" << endl;
 		complete();
 		return;
@@ -119,7 +119,7 @@ void ChangeActiveUser::act(Session& sess) {
 		return;
 	}
 	string userName = getWord(1, sess.getLastActionInput());
-	if (sess.getUserMap().count(userName) == 0) //if the username exists
+	if (!sess.userExists(userName)) //if the username exists
 	{
 		error("Username not found");
 		cout << getErrorMsg() << endl;
@@ -127,7 +127,7 @@ void ChangeActiveUser::act(Session& sess) {
 	}
 	else
 	{
-		sess.changeActiveUser(sess.getUserMap()[userName]);
+		sess.changeActiveUser(userName);
 		cout << "Active user was changed to " << userName << endl;
 		complete();
 		return;
@@ -163,7 +163,7 @@ void DeleteUser::act(Session& sess) {
 		cout << getErrorMsg() << endl;
 		return;
 	}
-	if (sess.getUserMap().count(userName) == 0) //if the username exists
+	if (!sess.userExists(userName)) //if the username exists
 	{
 		error("Username not found");
 		cout << getErrorMsg() << endl;
@@ -171,9 +171,7 @@ void DeleteUser::act(Session& sess) {
 	}
 	else
 	{
-		sess.getUserMap()[userName]->~User(); //delete the user
-		sess.getUserMap()[userName] = nullptr; //apply null pointer
-		sess.getUserMap().erase(userName); //delete the slot in the hash table
+		sess.deleteUser(sess.getUserByName(userName));
 		cout << "Deleted username " << userName << endl;
 		complete();
 		return;
@@ -204,25 +202,26 @@ void DuplicateUser::act(Session& sess) {
 	}
 	string oldUser = getWord(1, sess.getLastActionInput());
 	string newUser = getWord(2, sess.getLastActionInput());
-	if (sess.getUserMap().count(oldUser) == 0) //if the old username exists
+	if (!sess.userExists(oldUser)) //if the old username exists
 	{
 		error("Original username does not exist");
 		cout << getErrorMsg() << endl;
 		return;
 	}
-	if (sess.getUserMap().count(newUser) > 0) //if the new username exists
+	if (sess.userExists(newUser)) //if the new username exists
 	{
 		error("New username already exist");
 		cout << getErrorMsg() << endl;
 		return;
 	}
 	User* u;
+	User* old = sess.getUserByName(oldUser);
 	///////////check algo type of the old user//////////////
-	if (sess.getUserMap()[oldUser]->algoType() == "len")
+	if (old->algoType() == "len")
 	{
 		u = new LengthRecommenderUser(newUser);
 	}
-	else if (sess.getUserMap()[oldUser]->algoType() == "rer")
+	else if (old->algoType() == "rer")
 	{
 		u = new RerunRecommenderUser(newUser);
 	}
@@ -231,11 +230,11 @@ void DuplicateUser::act(Session& sess) {
 		u = new GenreRecommenderUser(newUser);
 	}
 	//add the same watchables to the new user
-	for (size_t i = 0; i < sess.getUserMap()[oldUser]->get_history().size(); i++)
+	for (size_t i = 0; i < old->get_history().size(); i++)
 	{
-		u->addWatched(sess.getUserMap()[oldUser]->get_history()[i]);
+		u->addWatched(old->get_history()[i]);
 	}
-	sess.getUserMap()[newUser] = u;
+	sess.addUserToMap(u);
 	cout << "Duplicated " << oldUser << " into " << newUser << " successfully" << endl;
 	complete();
 	return;
@@ -337,7 +336,7 @@ int Watch::isInteger(string s) { //check if the string can be cast to string, th
 	try {
 		return stoi(s);
 	}
-	catch (const std::exception & e) {
+	catch (const std::exception &) {
 		return -1;
 	}
 }
@@ -348,7 +347,7 @@ char Watch::isChar() { //try to cast input to char
 		cin >> c;
 		return c;
 	}
-	catch (const std::exception & e) {
+	catch (const std::exception &) {
 		return 'a';
 	}
 }
@@ -368,7 +367,8 @@ void Watch::act(Session& sess) {
 		return;
 	}
 	cout << "Watching " << sess.get_content()[id]->toString() << endl;
-	sess.getActiveUser()->addWatched(sess.get_content()[id]); //watch the watchable
+	sess.addWatchedToUser(sess.getActiveUser(), sess.get_content()[id]);
+	//sess.getActiveUser()->addWatched(sess.get_content()[id]); //watch the watchable
 	Watchable* w = sess.get_content()[id]->getNextWatchable(sess); //get the next recommendation
 	complete();
 	if (w == nullptr)
@@ -443,7 +443,7 @@ void Exit::act(Session& sess) {
 		complete();
 		return;
 	}
-	catch (exception & e)
+	catch (exception &)
 	{
 		error("Failed to exit");
 		cout << getErrorMsg() << endl;

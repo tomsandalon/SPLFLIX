@@ -93,7 +93,3 @@ using namespace std;
 		}
 		return (*s.getActiveUser()).getRecommendation(s);
 	}
-
-	
-
-			

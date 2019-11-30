@@ -26,12 +26,17 @@ public:
 	void start();
 	std::vector<Watchable*> get_content() const; //new
 	std::string getLastActionInput() const; //new
-	std::unordered_map<std::string, User*>& getUserMap(); //new
-	void changeActiveUser(User*); //new 
+	//std::unordered_map<std::string, User*>& getUserMap(); //new
+	void changeActiveUser(std::string); //new 
 	User* getActiveUser() const; //new
 	void watchRecommendationFromAction(Watchable*); //new
 	std::vector<BaseAction*> getActionLog() const; //new
 	void setRunToFalse(); //new
+	bool userExists(std::string) const;
+	User* getUserByName(std::string) const;
+	void addUserToMap(User*);
+	void deleteUser(User*);
+	void addWatchedToUser(User*, Watchable*);
 private:
 	void clean();// new
 	void copy(const Session& other);// new
