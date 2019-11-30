@@ -1,5 +1,5 @@
-#include "Watchable.h"
-#include "Session.h"
+#include "../include/Watchable.h"
+#include "../include/Session.h"
 
 #include <string>
 #include <vector>

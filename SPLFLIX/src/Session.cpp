@@ -1,12 +1,12 @@
-#include "Session.h"
-#include "User.h"
-#include "Watchable.h"
+#include "../include/Session.h"
+#include "../include/User.h"
+#include "../include/Watchable.h"
 #include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include "json.hpp"
-#include "Action.h"
+#include "../include/json.hpp"
+#include "../include/Action.h"
 
 
 using namespace std;

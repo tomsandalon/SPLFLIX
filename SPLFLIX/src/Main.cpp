@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Session.h"
+#include "../include/Session.h"
 using namespace std;
 
 int main(int argc, char** argv) {
@@ -9,7 +9,6 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 
-	cout << "ff";
 	Session s(argv[1]);
 	s.start();
 	return 0;

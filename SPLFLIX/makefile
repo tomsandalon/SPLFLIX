@@ -1,27 +1,30 @@
 # All Targets
-all: SPL
+all: spl
 
 # Tool invocations
-# Executable "SPL" depends on the files  bin/main.o bin/Action.o bin/Watchable.o bin/User.o bin/Session.o
-SPL: bin/main.o bin/Action.o bin/Watchable.o bin/User.o bin/Session.o
-    @echo 'Building target: SPL'
-    @echo 'Invoking: C++ Linker'
-    g++ -o bin/spl bin/main.o bin/Action.o  bin/Watchable.o  bin/User.o  bin/Session.o
-    @echo 'Finished building target: SPL'
-    @echo ' '
+# Executable "hello" depends on the files hello.o and run.o.
+spl: bin/Main.o bin/User.o bin/Watchable.o  bin/Action.o bin/Session.o
+	@echo 'Building target: spl'
+	@echo 'Invoking: C++ Linker'
+	g++ -o bin/splflix bin/Main.o  bin/User.o bin/Watchable.o  bin/Action.o bin/Session.o
+	@echo 'Finished building target: spl'
+	@echo ' '
 
-# Depends on the source and header files
-bin/main.o: main.cpp
-    g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/main.o main.cpp
-bin/Session.o: Session.cpp
-    g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Session.o Session.cpp
-bin/User.o: User.cpp
-    g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/User.o User.cpp
-bin/Watchable.o: Watchable.cpp
-    g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Watchable.o Watchable.cpp
-bin/Action.o: Action.cpp
-    g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Action.o Action.cpp
+
+# Depends on the source and header files 
+bin/Main.o: src/Main.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Main.o src/Main.cpp
+bin/User.o: src/User.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/User.o src/User.cpp
+bin/Action.o: src/Action.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Action.o src/Action.cpp
+bin/Watchable.o: src/Watchable.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Watchable.o src/Watchable.cpp
+bin/Session.o: src/Session.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Session.o src/Session.cpp
+bin/Main2.o: src/Main2.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Main2.o src/Main2.cpp
 
 #Clean the build directory
-clean:
-    rm -f bin/*
+clean: 
+	rm -f bin/*
