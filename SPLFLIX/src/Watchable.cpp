@@ -38,6 +38,10 @@ using namespace std;
 		return w;
 	}
 
+	string Movie::toString() const {
+		return toString(true);
+	}
+
 	string Movie::toString(bool shortValue) const {
 		string tags = "";
 		for (size_t i = 0; i < get_tags().size(); i++) {
@@ -69,6 +73,10 @@ using namespace std;
 	Watchable* Episode::clone() {
 		Watchable *w = new Episode(*this);
 		return w;
+	}
+
+	std::string Episode::toString() const {
+		return toString(true);
 	}
 
 	std::string Episode::toString(bool shortValue) const{
