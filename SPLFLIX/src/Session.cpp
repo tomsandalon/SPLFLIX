@@ -23,7 +23,6 @@ Session::Session(const std::string& configFilePath) {
 	cout << "session delete" << endl;
 	clean();
 }
-
 void Session::clean() {
 	cout << "session delete" << endl;
 	delete activeUser;
@@ -35,13 +34,10 @@ void Session::clean() {
 			delete it->second;
 	for (size_t i = 0; i < actionsLog.size(); i++)
 		delete actionsLog[i];
-
 }
-
 Session::Session(const Session& other) {
 	copy(other);
 }
-
 Session& Session::operator=(const Session& other) {
 		if (&other != this) {
 			clean();
@@ -49,11 +45,9 @@ Session& Session::operator=(const Session& other) {
 		}
 		return *this;
 	}
-
 Session::Session(Session&& other) {
 	steal(other);
 }
-
 Session& Session :: operator=( Session&& other) {
 	if (&other != this) {
 		clean();
@@ -61,9 +55,6 @@ Session& Session :: operator=( Session&& other) {
 	}
 	return *this;
 }
-
-
-
  void Session::copy(const Session& other) {	
 	content =other.content;
 	for (size_t i = 0; i < content.size(); i++) {
@@ -74,7 +65,6 @@ Session& Session :: operator=( Session&& other) {
 			content[i] = new Episode(other.content[i]);
 		}
 	}
-
 	actionsLog = other.actionsLog;
 	userMap = other.userMap;
 	lastActionInput = other.lastActionInput;
