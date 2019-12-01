@@ -25,18 +25,18 @@ Session::~Session() {
 }
 void Session::clean() {
 	cout << "session delete" << endl;
-	if (activeUser != nullptr)
-	delete activeUser;
-	for (int i = 0; i < content.size(); i++){
+	for (size_t i = 0; i < content.size(); i++){
 		if (content[i] != nullptr)
 			delete content[i];
-			}
+	}
 	for (auto it = userMap.begin(); it != userMap.end(); ++it){
 		if (it->second != nullptr)
-			delete it->second;}
+			delete it->second;
+	}
 	for (size_t i = 0; i < actionsLog.size(); i++){
 	    if( actionsLog[i] != nullptr)
-		delete actionsLog[i];}
+			delete actionsLog[i];
+	}
 }
 
 Session::Session(const Session& other): content(other.content), actionsLog(other.actionsLog), userMap(other.userMap) , activeUser(other.activeUser), lastActionInput(other.lastActionInput),  run(other.run)   {
@@ -189,6 +189,7 @@ void Session::watchRecommendationFromAction(Watchable* w) {
 	lastActionInput = "watch " + to_string(w->get_id());
 	Watch* nextWat = new Watch();
 	nextWat->act(*this);
+	actionsLog.push_back(nextWat);
 }
 
 std::vector<BaseAction*> Session::getActionLog() const {

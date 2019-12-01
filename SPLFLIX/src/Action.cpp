@@ -3,7 +3,7 @@ using namespace std;
 BaseAction::~BaseAction() {
 		cout << ": delete" << endl;
 	};
-BaseAction::BaseAction() : status(PENDING), errorMsg("") {};
+BaseAction::BaseAction() : errorMsg(""), status(PENDING) {};
 
 ActionStatus BaseAction::getStatus() const { return status; };
 void BaseAction::complete() { status = COMPLETED; }; //change status to complete
