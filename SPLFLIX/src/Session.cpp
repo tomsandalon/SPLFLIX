@@ -73,13 +73,13 @@ Session& Session :: operator=( Session&& other) {
 
 	auto it = other.userMap.begin(); 
 	while(it != other.userMap.end()) {
-		 userMap[it->first] = it->second -> clone();
+		 userMap[it->first] = it->second -> clone(other);
 		  ++it;
 	}
 
 	lastActionInput = other.lastActionInput;
 
-	activeUser = other.activeUser -> clone();
+	activeUser = other.activeUser -> clone(other);
 }
 
 void Session::steal(Session &other){

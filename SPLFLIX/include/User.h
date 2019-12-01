@@ -22,7 +22,7 @@ public:
 	bool already_watched(Watchable*) const;
 	virtual void addWatched(Watchable*) = 0;
 	virtual std::string algoType() const = 0; //return the type of algo
-	virtual User* clone() = 0;
+	virtual User* clone(const Session&) = 0;
 protected:
 	std::vector<Watchable*> history;
 private:
@@ -36,7 +36,7 @@ public:
 	virtual Watchable* getRecommendation(Session& s);
 	virtual void addWatched(Watchable*);
 	virtual std::string algoType() const;
-	virtual User* clone();
+	virtual User* clone(const Session&);
 private:
 	double averageWatchtime() const;
 };
@@ -49,7 +49,7 @@ public:
 	virtual std::string algoType() const;
 	void setCurrentMovie(int);
 	int getCurrentMovie();
-	virtual User* clone();
+	virtual User* clone(const Session&);
 private:
 	int currentMovie;
 };
@@ -59,7 +59,7 @@ public:
 	GenreRecommenderUser(const std::string& name); //constructor
 	virtual Watchable* getRecommendation(Session& s);
 	virtual std::string algoType() const;
-	virtual User* clone();
+	virtual User* clone(const Session&);
 private:
 	std::vector<std::tuple<int, std::string>> tagCounter;
 	virtual void addWatched(Watchable*);

@@ -27,8 +27,12 @@ bool User::already_watched(Watchable* w) const { //we check if the content was a
 
 LengthRecommenderUser::LengthRecommenderUser(const string& _name) : User(_name) {};
 
-User* LengthRecommenderUser::clone() {
-	User *cloned = new LengthRecommenderUser(*this);
+User* LengthRecommenderUser::clone(const Session& other) {
+	LengthRecommenderUser* cloned = new LengthRecommenderUser(getName());
+	for (size_t i = 0; i < get_history().size(); i++)
+	{
+		cloned->addWatched(other.get_content()[get_history()[i]->get_id()]);
+	}
 	return cloned;
 }
 
@@ -70,9 +74,14 @@ string LengthRecommenderUser::algoType() const { return "len"; };
 
 RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), currentMovie(0) {};
 
-User* RerunRecommenderUser::clone() {
-		User *cloned = new RerunRecommenderUser(*this);
-		return cloned;
+User* RerunRecommenderUser::clone(const Session& other) {
+	RerunRecommenderUser* cloned = new RerunRecommenderUser(getName());
+	for (size_t i = 0; i < get_history().size(); i++)
+	{
+		cloned->addWatched(other.get_content()[get_history()[i]->get_id()]);
+	}
+	cloned->setCurrentMovie(getCurrentMovie());
+	return cloned;
 }
 
 void RerunRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
@@ -99,9 +108,13 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
 
 string RerunRecommenderUser::algoType() const { return "rer"; }; 
 
-User* GenreRecommenderUser::clone() {
-		User *cloned = new GenreRecommenderUser(*this);
-		return cloned;
+User* GenreRecommenderUser::clone(const Session& other) {
+	GenreRecommenderUser* cloned = new GenreRecommenderUser(getName());
+	for (size_t i = 0; i < get_history().size(); i++)
+	{
+		cloned->addWatched(other.get_content()[get_history()[i]->get_id()]);
+	}
+	return cloned;
 }
 
 void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist

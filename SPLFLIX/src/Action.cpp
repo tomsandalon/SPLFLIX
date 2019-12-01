@@ -93,7 +93,7 @@ void CreateUser::act(Session& sess) {
 		return;
 	}
 	error("Recommendation algorithm is invalid");
-	cout << getErrorMsg() << endl;
+	cout << toString() << endl;
 	return;
 }
 
@@ -228,7 +228,8 @@ void DuplicateUser::act(Session& sess) {
 		cout << toString() << endl;
 		return;
 	}
-	User* u;
+	User* u = sess.getUserByName(oldUser)->clone(sess);
+	/**
 	if (sess.getUserAlgoType(oldUser) == "len")
 	{
 		u = new LengthRecommenderUser(newUser);
@@ -245,7 +246,7 @@ void DuplicateUser::act(Session& sess) {
 	for (size_t i = 0; i < sess.getUserHistory(oldUser).size(); i++)
 	{
 		u->addWatched(sess.getUserHistory(oldUser)[i]);
-	}
+	}**/
 	sess.addUserToMap(u);
 	cout << "Duplicated " << oldUser << " into " << newUser << " successfully" << endl;
 	complete();
