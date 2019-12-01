@@ -19,7 +19,7 @@ Session::Session(const std::string& configFilePath) {
 
 
 
-Session::~Session() {
+/*Session::~Session() {
 	cout << "session delete" << endl;
 	clean();
 }
@@ -65,7 +65,7 @@ Session& Session :: operator=( Session&& other) {
 
 
  void Session::copy(const Session& other) {	
-	/*content =other.content;
+	content =other.content;
 	for (size_t i = 0; i < content.size(); i++) {
 		if (other.content[i]->isMovie()) {
 			content[i] = new Movie(other.content[i]);
@@ -77,8 +77,8 @@ Session& Session :: operator=( Session&& other) {
 
 	actionsLog = other.actionsLog;
 	userMap = other.userMap;
-	lastActionInput = other.lastActionInput;*/
-}
+	lastActionInput = other.lastActionInput;
+}*/
 
 void Session::steal(Session &other){
 	activeUser = other.activeUser;

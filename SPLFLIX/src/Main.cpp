@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../include/Session.h"
 using namespace std;
-/**
+
 int main(int argc, char** argv){
 	if(argc!=2)
 	{
@@ -12,4 +12,3 @@ int main(int argc, char** argv){
 	s.start();
 	return 0;
 }
-**/

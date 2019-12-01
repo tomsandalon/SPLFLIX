@@ -18,11 +18,12 @@ class PrintActionsLog;
 class Session {
 public:
 	Session(const std::string& configFilePath);
-	virtual ~Session();
-	Session& operator=(const Session& other);//new
+	//virtual ~Session();
+	/*Session& operator=(const Session& other);//new
 	Session(const Session& other);// new
 	Session& operator=(Session&& other);// new
 	Session(Session&& other);// new
+	*/
 	void start();
 	std::vector<Watchable*> get_content() const; //new
 	std::string getLastActionInput() const; //new
@@ -41,7 +42,7 @@ public:
 	std::vector<Watchable*> getUserHistory(string) const;
 private:
 	void clean();// new
-	void copy(const Session& other);// new
+//	void copy(const Session& other);// new
 	void steal(Session& other);// new
 	void setJsonData(const std::string& configFilePath);
 	std::vector<Watchable*> content;
