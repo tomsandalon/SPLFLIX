@@ -52,6 +52,9 @@ string BaseAction::getWord(int num, string s) const { //returns a subword
 	}
 	return r;
 }
+BaseAction* BaseAction::clone() {
+		 return nullptr;
+}
 
 void CreateUser::act(Session& sess) {
 	User* u;
@@ -109,6 +112,10 @@ string CreateUser::toString() const{
 		return "Create User function is still pending";
 	}
 }
+BaseAction* CreateUser::clone() {
+		BaseAction *w = new CreateUser(*this);
+		return w;
+}
 
 void ChangeActiveUser::act(Session& sess) {
 	if (countWords(sess.getLastActionInput()) < 2) //if the number of arguments is invalid
@@ -146,6 +153,11 @@ string ChangeActiveUser::toString() const {
 		return "Change Active User function is still pending";
 	}
 }
+BaseAction* ChangeActiveUser::clone() {
+		BaseAction *w = new ChangeActiveUser(*this);
+		return w;
+}
+
 
 void DeleteUser::act(Session& sess) {
 	if (countWords(sess.getLastActionInput()) < 2) //if the number of arguments is invalid
@@ -189,6 +201,11 @@ string DeleteUser::toString() const {
 	{
 		return "Delete User function is still pending";
 	}
+}
+
+BaseAction* DeleteUser::clone() {
+		BaseAction *w = new DeleteUser(*this);
+		return w;
 }
 
 void DuplicateUser::act(Session& sess) {
@@ -257,6 +274,10 @@ string DuplicateUser::toString() const {
 	}
 }
 
+BaseAction* DuplicateUser::clone() {
+		BaseAction *w = new DuplicateUser(*this);
+		return w;
+}
 
 
 string PrintContentList::tagsToString(vector<string> tags) { //creating a valid string from tags
@@ -332,6 +353,15 @@ string PrintWatchHistory::toString() const {
 	{
 		return "History printing function is still pending";
 	}
+}
+BaseAction* PrintWatchHistory::clone() {
+		BaseAction *w = new PrintWatchHistory(*this);
+		return w;
+}
+
+BaseAction* PrintContentList::clone() {
+		BaseAction *w = new PrintContentList(*this);
+		return w;
 }
 
 int Watch::isInteger(string s) { //check if the string can be cast to string, then cast it
@@ -411,6 +441,10 @@ string Watch::toString() const {
 		return "Watch function is still pending";
 	}
 }
+BaseAction* Watch::clone() {
+		BaseAction *w = new Watch(*this);
+		return w;
+}
 
 
 void PrintActionsLog::act(Session& sess) { //print the action log
@@ -422,7 +456,10 @@ void PrintActionsLog::act(Session& sess) { //print the action log
 	complete();
 	return;
 }
-
+BaseAction* PrintActionsLog::clone() {
+		BaseAction *w = new PrintActionsLog(*this);
+		return w;
+}
 
 
 string PrintActionsLog::toString() const {
@@ -468,4 +505,8 @@ string Exit::toString() const {
 	{
 		return "Exit is still pending";
 	}
+}
+BaseAction* Exit::clone() {
+		BaseAction *w = new Exit(*this);
+		return w;
 }

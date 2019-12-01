@@ -14,6 +14,10 @@ string User::getName() const {
 	return name;
 };
 
+User* User::clone() {
+		return nullptr;
+}
+
 vector<Watchable*> User::get_history() const {
 	return history;
 };
@@ -28,6 +32,11 @@ bool User::already_watched(Watchable* w) const { //we check if the content was a
 };
 
 LengthRecommenderUser::LengthRecommenderUser(const string& _name) : User(_name) {};
+
+User* LengthRecommenderUser::clone() {
+		User *cloned = new LengthRecommenderUser(*this);
+		return cloned;
+}
 
 void LengthRecommenderUser::addWatched(Watchable* w) { //add to the watch list
 	if (!already_watched(w))
@@ -68,6 +77,11 @@ string LengthRecommenderUser::algoType() const { return "len"; };
 
 RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), currentMovie(0) {};
 
+User* RerunRecommenderUser::clone() {
+		User *cloned = new RerunRecommenderUser(*this);
+		return cloned;
+}
+
 void RerunRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 	if (!already_watched(w))
 		history.push_back(w);
@@ -92,6 +106,11 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
 };
 
 string RerunRecommenderUser::algoType() const { return "rer"; }; 
+
+User* GenreRecommenderUser::clone() {
+		User *cloned = new GenreRecommenderUser(*this);
+		return cloned;
+}
 
 void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 	if (already_watched(w))

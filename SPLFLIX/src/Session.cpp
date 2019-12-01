@@ -20,11 +20,9 @@ Session::Session(const std::string& configFilePath):content({}), actionsLog({}),
 
 
 Session::~Session() {
-	cout << "session deleteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" << endl;
 	clean();
 }
 void Session::clean() {
-	cout << "session delete" << endl;
 	for (size_t i = 0; i < content.size(); i++){
 		if (content[i] != nullptr)
 			delete content[i];
@@ -61,13 +59,25 @@ Session& Session :: operator=( Session&& other) {
 }
  void Session::copy(const Session& other) {	
 	
-	for (size_t i = 0; i < content.size(); i++) {
+	//content = other.content;
+	for (size_t i = 0; i < other.content.size(); i++) {
 		content[i] = other.content[i] -> clone();
 	}
-	actionsLog = other.actionsLog;
-	userMap = other.userMap;
+
+	//actionsLog = other.actionsLog;
+	for (size_t i = 0; i < other.actionsLog.size(); i++) {
+		actionsLog[i] = other.actionsLog[i] -> clone();
+	}
+
+	auto it = other.userMap.begin(); 
+	while(it != other.userMap.end()) {
+		 userMap[it->first] = it->second -> clone();
+		  ++it;
+	}
+
 	lastActionInput = other.lastActionInput;
-	//activeUser = User(*other.activeUser);
+
+	activeUser = other.activeUser -> clone();
 }
 
 void Session::steal(Session &other){

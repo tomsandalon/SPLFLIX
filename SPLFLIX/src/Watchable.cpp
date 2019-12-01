@@ -12,7 +12,6 @@ using namespace std;
     Watchable::Watchable(const Watchable& other) : id(other.id), length(other.length), tags(other.tags) {}
 
 	Watchable::~Watchable() {
-		cout << "watchable delete" << endl;
 	}
 	void Episode::set_Next_Episode(int i){
 		nextEpisodeId = i;
