@@ -22,7 +22,7 @@ public:
 	bool already_watched(Watchable*) const;
 	virtual void addWatched(Watchable*) = 0;
 	virtual std::string algoType() const = 0; //return the type of algo
-	virtual User* clone();
+	virtual User* clone() = 0;
 protected:
 	std::vector<Watchable*> history;
 private:

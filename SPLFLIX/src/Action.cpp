@@ -229,23 +229,17 @@ void DuplicateUser::act(Session& sess) {
 		return;
 	}
 	User* u;
-	//User* old = sess.getUserByName(oldUser);
-	///////////check algo type of the old user//////////////
 	if (sess.getUserAlgoType(oldUser) == "len")
 	{
 		u = new LengthRecommenderUser(newUser);
-		
 	}
 	else if (sess.getUserAlgoType(oldUser) == "rer")
 	{
 		u = new RerunRecommenderUser(newUser);
-		
-
 	}
 	else
 	{
 		u = new GenreRecommenderUser(newUser);
-		
 	}
 	//add the same watchables to the new user
 	for (size_t i = 0; i < sess.getUserHistory(oldUser).size(); i++)

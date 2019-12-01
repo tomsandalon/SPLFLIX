@@ -5,17 +5,12 @@ using namespace std;
 
 User::User(const string& _name) :  history(0), name(_name){} //user constructor
 
-User::~User() {
-	};
+User::~User() {	};
 
 
 string User::getName() const {
 	return name;
 };
-
-User* User::clone() {
-		return nullptr;
-}
 
 vector<Watchable*> User::get_history() const {
 	return history;
@@ -33,13 +28,12 @@ bool User::already_watched(Watchable* w) const { //we check if the content was a
 LengthRecommenderUser::LengthRecommenderUser(const string& _name) : User(_name) {};
 
 User* LengthRecommenderUser::clone() {
-		User *cloned = new LengthRecommenderUser(*this);
-		return cloned;
+	User *cloned = new LengthRecommenderUser(*this);
+	return cloned;
 }
 
 void LengthRecommenderUser::addWatched(Watchable* w) { //add to the watch list
-	if (!already_watched(w))
-		history.push_back(w);
+	history.push_back(w);
 };
 
 double LengthRecommenderUser::averageWatchtime() const { //calculate the average watchtime of the user
@@ -82,8 +76,7 @@ User* RerunRecommenderUser::clone() {
 }
 
 void RerunRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
-	if (!already_watched(w))
-		history.push_back(w);
+	history.push_back(w);
 };
 
 void RerunRecommenderUser::setCurrentMovie(int count) {
@@ -112,10 +105,6 @@ User* GenreRecommenderUser::clone() {
 }
 
 void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
-	if (already_watched(w))
-	{
-		return;
-	}
 	history.push_back(w);
 	bool found;
 	//add the proper tags to the tag list
