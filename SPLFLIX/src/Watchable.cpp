@@ -27,10 +27,17 @@ using namespace std;
 		return tags;
 	}
 
+	Watchable* Watchable::clone() {
+		return nullptr;
+	}
+
 
 	Movie::Movie(long id, const std::string& name, int length,  std::vector<std::string>& tags) : Watchable(id, length, tags), name(name) {}
 
-
+	Watchable* Movie::clone() {
+		Watchable *w = new Movie(*this);
+		return w;
+	}
 
 	string Movie::toString(bool shortValue) const {
 		string tags = "";
@@ -58,6 +65,12 @@ using namespace std;
 
 
 	Episode::Episode(long id, const std::string& seriesName, int length, int season, int episode, std::vector<std::string>& tags) : Watchable(id, length, tags), seriesName(seriesName), season(season), episode(episode), nextEpisodeId(-1) {}
+
+
+	Watchable* Episode::clone() {
+		Watchable *w = new Episode(*this);
+		return w;
+	}
 
 	std::string Episode::toString(bool shortValue) const{
 		string episodeN;

@@ -60,15 +60,10 @@ Session& Session :: operator=( Session&& other) {
 	return *this;
 }
  void Session::copy(const Session& other) {	
-	content =other.content;
-	//for (size_t i = 0; i < content.size(); i++) {
-	//	if (other.content[i]->isMovie()) {
-	//		content[i] = new Movie(other.content[i]);
-	//	}
-	//	else {
-	//		content[i] = new Episode(other.content[i]);
-	//	}
-	//}
+	
+	for (size_t i = 0; i < content.size(); i++) {
+		content[i] = other.content[i] -> clone();
+	}
 	actionsLog = other.actionsLog;
 	userMap = other.userMap;
 	lastActionInput = other.lastActionInput;
