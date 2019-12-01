@@ -35,8 +35,10 @@ public:
 	bool userExists(std::string) const;
 	User* getUserByName(std::string) const;
 	void addUserToMap(User*);
-	void deleteUser(User*);
+	void deleteUser(std::string);
 	void addWatchedToUser(User*, Watchable*);
+	std::string getUserAlgoType(string) const;
+	std::vector<Watchable*> getUserHistory(string) const;
 private:
 	void clean();// new
 	void copy(const Session& other);// new

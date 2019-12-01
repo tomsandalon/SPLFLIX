@@ -259,12 +259,20 @@ void Session::addUserToMap(User* u) {
 	userMap[u->getName()] = u;
 }
 
-void Session::deleteUser(User* u) {
-	userMap[u->getName()] = nullptr; //apply null pointer
-	userMap.erase(u->getName()); //delete the slot in the hash table
-	u->~User(); //delete the user
+void Session::deleteUser(string s) {
+	userMap[s]->~User();
+	userMap[s] = nullptr; //apply null pointer
+	userMap.erase(s); //delete the slot in the hash table
 }
 
 void Session::addWatchedToUser(User* u, Watchable* w) {
 	u->addWatched(w);
+}
+
+std::string Session::getUserAlgoType(string s) const {
+	return userMap.at(s)->algoType();
+}
+
+std::vector<Watchable*> Session::getUserHistory(string s) const {
+	return userMap.at(s)->get_history();
 }

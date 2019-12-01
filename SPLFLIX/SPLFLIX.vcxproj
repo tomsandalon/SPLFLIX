@@ -33,6 +33,9 @@
     <ClCompile Include="src\User.cpp" />
     <ClCompile Include="src\Watchable.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="config.json" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{BBCC50D7-F58C-4C70-B03F-7CC58FD612A3}</ProjectGuid>

@@ -63,7 +63,7 @@ void CreateUser::act(Session& sess) {
 	string algo = getWord(2, sess.getLastActionInput());
 	if (sess.userExists(userName)) //if the username is available
 	{
-		error("This username is already taken");
+		error("Username is already in use");
 		cout << getErrorMsg() << endl;
 		return;
 	}
@@ -88,7 +88,7 @@ void CreateUser::act(Session& sess) {
 		complete();
 		return;
 	}
-	error("3-letter code not found");
+	error("Recommendation algorithm is invalid");
 	cout << getErrorMsg() << endl;
 	return;
 }
@@ -96,7 +96,7 @@ void CreateUser::act(Session& sess) {
 string CreateUser::toString() const{
 	if (getStatus() == ERROR)
 	{
-		return "Create User function resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{
@@ -161,13 +161,13 @@ void DeleteUser::act(Session& sess) {
 	}
 	if (!sess.userExists(userName)) //if the username exists
 	{
-		error("Username not found");
+		error("Username does not exist");
 		cout << getErrorMsg() << endl;
 		return;
 	}
 	else
 	{
-		sess.deleteUser(sess.getUserByName(userName));
+		sess.deleteUser(userName);
 		cout << "Deleted username " << userName << endl;
 		complete();
 		return;
@@ -177,7 +177,7 @@ void DeleteUser::act(Session& sess) {
 string DeleteUser::toString() const {
 	if (getStatus() == ERROR)
 	{
-		return "Delete User function resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{
@@ -206,18 +206,18 @@ void DuplicateUser::act(Session& sess) {
 	}
 	if (sess.userExists(newUser)) //if the new username exists
 	{
-		error("New username already exist");
+		error("New username is already in use");
 		cout << getErrorMsg() << endl;
 		return;
 	}
 	User* u;
-	User* old = sess.getUserByName(oldUser);
+	//User* old = sess.getUserByName(oldUser);
 	///////////check algo type of the old user//////////////
-	if (old->algoType() == "len")
+	if (sess.getUserAlgoType(oldUser) == "len")
 	{
 		u = new LengthRecommenderUser(newUser);
 	}
-	else if (old->algoType() == "rer")
+	else if (sess.getUserAlgoType(oldUser) == "rer")
 	{
 		u = new RerunRecommenderUser(newUser);
 	}
@@ -226,9 +226,9 @@ void DuplicateUser::act(Session& sess) {
 		u = new GenreRecommenderUser(newUser);
 	}
 	//add the same watchables to the new user
-	for (size_t i = 0; i < old->get_history().size(); i++)
+	for (size_t i = 0; i < sess.getUserHistory(oldUser).size(); i++)
 	{
-		u->addWatched(old->get_history()[i]);
+		u->addWatched(sess.getUserHistory(oldUser)[i]);
 	}
 	sess.addUserToMap(u);
 	cout << "Duplicated " << oldUser << " into " << newUser << " successfully" << endl;
@@ -239,7 +239,7 @@ void DuplicateUser::act(Session& sess) {
 string DuplicateUser::toString() const {
 	if (getStatus() == ERROR)
 	{
-		return "Duplicate User function resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{
@@ -284,7 +284,7 @@ void PrintContentList::act(Session& sess) {
 string PrintContentList::toString() const {
 	if (getStatus() == ERROR)
 	{
-		return "Print content function resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{
@@ -315,7 +315,7 @@ void PrintWatchHistory::act(Session& sess) {
 string PrintWatchHistory::toString() const {
 	if (getStatus() == ERROR)
 	{
-		return "Print history function resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{
@@ -393,7 +393,7 @@ void Watch::act(Session& sess) {
 string Watch::toString() const {
 	if (getStatus() == ERROR)
 	{
-		return "Watch function resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{
@@ -420,7 +420,7 @@ void PrintActionsLog::act(Session& sess) { //print the action log
 string PrintActionsLog::toString() const {
 	if (getStatus() == ERROR)
 	{
-		return "Print log function resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{
@@ -449,7 +449,7 @@ void Exit::act(Session& sess) {
 string Exit::toString() const {
 	if (getStatus() == ERROR)
 	{
-		return "Exit resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{

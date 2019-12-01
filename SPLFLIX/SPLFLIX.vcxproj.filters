@@ -15,4 +15,7 @@
     <ClCompile Include="src\User.cpp" />
     <ClCompile Include="src\Watchable.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="config.json" />
+  </ItemGroup>
 </Project>
