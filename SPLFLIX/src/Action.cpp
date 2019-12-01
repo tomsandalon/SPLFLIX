@@ -53,10 +53,10 @@ string BaseAction::getWord(int num, string s) const { //returns a subword
 
 void CreateUser::act(Session& sess) {
 	User* u;
-	if (countWords(sess.getLastActionInput()) != 3) //if the number of arguments does not match
+	if (countWords(sess.getLastActionInput()) < 3) //if the number of arguments does not match
 	{
 		error("The number of variables for this command is illegal");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	string userName = getWord(1, sess.getLastActionInput());
@@ -64,7 +64,7 @@ void CreateUser::act(Session& sess) {
 	if (sess.userExists(userName)) //if the username is available
 	{
 		error("Username is already in use");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	if (algo == "len") //length algo
@@ -109,17 +109,17 @@ string CreateUser::toString() const{
 }
 
 void ChangeActiveUser::act(Session& sess) {
-	if (countWords(sess.getLastActionInput()) != 2) //if the number of arguments is invalid
+	if (countWords(sess.getLastActionInput()) < 2) //if the number of arguments is invalid
 	{
 		error("Invalid arguments for change active user action");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	string userName = getWord(1, sess.getLastActionInput());
 	if (!sess.userExists(userName)) //if the username exists
 	{
 		error("Username not found");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	else
@@ -146,23 +146,23 @@ string ChangeActiveUser::toString() const {
 }
 
 void DeleteUser::act(Session& sess) {
-	if (countWords(sess.getLastActionInput()) != 2) //if the number of arguments is invalid
+	if (countWords(sess.getLastActionInput()) < 2) //if the number of arguments is invalid
 	{
 		error("Invalid arguments for delete user action");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	string userName = getWord(1, sess.getLastActionInput());
 	if (sess.getActiveUser()->getName().compare(userName) == 0) //if the username to delete is the active username
 	{
 		error("Cant delete current active user");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	if (!sess.userExists(userName)) //if the username exists
 	{
 		error("Username does not exist");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	else
@@ -190,10 +190,10 @@ string DeleteUser::toString() const {
 }
 
 void DuplicateUser::act(Session& sess) {
-	if (countWords(sess.getLastActionInput()) != 3) //if the number of arguments is valid
+	if (countWords(sess.getLastActionInput()) < 3) //if the number of arguments is valid
 	{
 		error("Invalid arguments for duplicate user action");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	string oldUser = getWord(1, sess.getLastActionInput());
@@ -201,13 +201,13 @@ void DuplicateUser::act(Session& sess) {
 	if (!sess.userExists(oldUser)) //if the old username exists
 	{
 		error("Original username does not exist");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	if (sess.userExists(newUser)) //if the new username exists
 	{
 		error("New username is already in use");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	User* u;
@@ -270,7 +270,7 @@ void PrintContentList::act(Session& sess) {
 	if (sess.get_content().size() == 0) //check if there is content
 	{
 		error("No content in SPLFLIX");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	for (size_t i = 0; i < sess.get_content().size(); i++) //print the content
@@ -300,7 +300,7 @@ void PrintWatchHistory::act(Session& sess) {
 	if (sess.getActiveUser()->get_history().size() == 0) //check if the user has history
 	{
 		error("Current user has not watched anything yet");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	cout << "Watch history for " << sess.getActiveUser()->getName() << endl;
@@ -348,17 +348,17 @@ char Watch::isChar() { //try to cast input to char
 }
 
 void Watch::act(Session& sess) {
-	if (countWords(sess.getLastActionInput()) != 2) //check if the number of arguments is valid
+	if (countWords(sess.getLastActionInput()) < 2) //check if the number of arguments is valid
 	{
 		error("Invalid arguments for watch user action");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	int id = Watch::isInteger(getWord(1, sess.getLastActionInput())) - 1; //find the id of the movie - it's location is (printed id-1)
 	if (id < 0 || id >= static_cast<int>(sess.get_content().size())) //if the movie id exists
 	{
 		error("Invalid content ID");
-		cout << getErrorMsg() << endl;
+		cout << toString() << endl;
 		return;
 	}
 	cout << "Watching " << sess.get_content()[id]->toString(true) << endl;
