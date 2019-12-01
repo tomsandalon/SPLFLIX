@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Session::Session(const std::string& configFilePath) {
+Session::Session(const std::string& configFilePath):content({}), actionsLog({}), userMap({}), activeUser(nullptr) ,lastActionInput(""), run(false)   {
 	activeUser = new LengthRecommenderUser("default");
 	userMap[activeUser->getName()] = activeUser;
 	setJsonData(configFilePath);
@@ -19,33 +19,37 @@ Session::Session(const std::string& configFilePath) {
 
 
 
-/*Session::~Session() {
-	cout << "session delete" << endl;
+Session::~Session() {
+	cout << "session deleteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" << endl;
 	clean();
 }
 void Session::clean() {
 	cout << "session delete" << endl;
+	if (activeUser != nullptr)
 	delete activeUser;
-	for (int i = 0; i < content.size(); i++)
-		while (content[i] != nullptr)
+	for (int i = 0; i < content.size(); i++){
+		if (content[i] != nullptr)
 			delete content[i];
-	for (auto it = userMap.begin(); it != userMap.end(); ++it)
-		while (it->second != nullptr)
-			delete it->second;
-	for (size_t i = 0; i < actionsLog.size(); i++)
-		delete actionsLog[i];
+			}
+	for (auto it = userMap.begin(); it != userMap.end(); ++it){
+		if (it->second != nullptr)
+			delete it->second;}
+	for (size_t i = 0; i < actionsLog.size(); i++){
+	    if( actionsLog[i] != nullptr)
+		delete actionsLog[i];}
 }
-Session::Session(const Session& other) {
+
+Session::Session(const Session& other): content(other.content), actionsLog(other.actionsLog), userMap(other.userMap) , activeUser(other.activeUser), lastActionInput(other.lastActionInput),  run(other.run)   {
 	copy(other);
 }
-Session& Session::operator=(const Session& other) {
+Session& Session::operator=(const Session& other){
 		if (&other != this) {
 			clean();
 				copy(other);
 		}
 		return *this;
 	}
-Session::Session(Session&& other) {
+Session::Session(Session&& other): content(other.content), actionsLog(other.actionsLog), userMap(other.userMap) , activeUser(other.activeUser), lastActionInput(other.lastActionInput),  run(other.run)  {
 	steal(other);
 }
 Session& Session :: operator=( Session&& other) {
@@ -57,18 +61,19 @@ Session& Session :: operator=( Session&& other) {
 }
  void Session::copy(const Session& other) {	
 	content =other.content;
-	for (size_t i = 0; i < content.size(); i++) {
-		if (other.content[i]->isMovie()) {
-			content[i] = new Movie(other.content[i]);
-		}
-		else {
-			content[i] = new Episode(other.content[i]);
-		}
-	}
+	//for (size_t i = 0; i < content.size(); i++) {
+	//	if (other.content[i]->isMovie()) {
+	//		content[i] = new Movie(other.content[i]);
+	//	}
+	//	else {
+	//		content[i] = new Episode(other.content[i]);
+	//	}
+	//}
 	actionsLog = other.actionsLog;
 	userMap = other.userMap;
 	lastActionInput = other.lastActionInput;
-}*/
+	//activeUser = User(*other.activeUser);
+}
 
 void Session::steal(Session &other){
 	activeUser = other.activeUser;
@@ -119,12 +124,14 @@ void Session::start() {
 			BaseAction* action = new PrintActionsLog();
 			action->act(*this);
 			actionsLog.push_back(action);
+
 		}
 		else if (userInput.compare("watchhist") == 0) {
 			lastActionInput = userInput;
 			BaseAction* action = new PrintWatchHistory();
 			action->act(*this);
 			actionsLog.push_back(action);
+
 		}
 		else if (userInput.length() > 9 && userInput.substr(0, 8).compare("dupuser ") == 0) {
 			lastActionInput = userInput;
@@ -180,8 +187,8 @@ User* Session::getActiveUser() const {
 
 void Session::watchRecommendationFromAction(Watchable* w) {
 	lastActionInput = "watch " + to_string(w->get_id());
-	Watch* a = new Watch();
-	a->act(*this);
+	Watch* nextWat = new Watch();
+	nextWat->act(*this);
 }
 
 std::vector<BaseAction*> Session::getActionLog() const {

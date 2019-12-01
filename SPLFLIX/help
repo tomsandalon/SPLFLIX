@@ -1,0 +1,11 @@
+
+compile:
+make clean
+make
+
+check memory leak:
+valgrind --leak-check=full --show-reachable=yes bin/splflix config2.json < inp1.txt
+
+
+run progam:
+bin/splflix config2.json < inp1.txt

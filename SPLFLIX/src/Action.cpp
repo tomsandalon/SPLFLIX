@@ -1,6 +1,8 @@
 #include "../include/Action.h"
 using namespace std;
-
+BaseAction::~BaseAction() {
+		cout << ": delete" << endl;
+	};
 BaseAction::BaseAction() : status(PENDING), errorMsg("") {};
 
 ActionStatus BaseAction::getStatus() const { return status; };
@@ -173,7 +175,7 @@ void DeleteUser::act(Session& sess) {
 		return;
 	}
 }
-
+	
 string DeleteUser::toString() const {
 	if (getStatus() == ERROR)
 	{
@@ -216,14 +218,18 @@ void DuplicateUser::act(Session& sess) {
 	if (sess.getUserAlgoType(oldUser) == "len")
 	{
 		u = new LengthRecommenderUser(newUser);
+		
 	}
 	else if (sess.getUserAlgoType(oldUser) == "rer")
 	{
 		u = new RerunRecommenderUser(newUser);
+		
+
 	}
 	else
 	{
 		u = new GenreRecommenderUser(newUser);
+		
 	}
 	//add the same watchables to the new user
 	for (size_t i = 0; i < sess.getUserHistory(oldUser).size(); i++)
@@ -250,6 +256,7 @@ string DuplicateUser::toString() const {
 		return "Duplicate User function is still pending";
 	}
 }
+
 
 
 string PrintContentList::tagsToString(vector<string> tags) { //creating a valid string from tags
@@ -405,6 +412,7 @@ string Watch::toString() const {
 	}
 }
 
+
 void PrintActionsLog::act(Session& sess) { //print the action log
 	for (size_t i = 0; i < sess.getActionLog().size(); i++)
 	{
@@ -431,6 +439,7 @@ string PrintActionsLog::toString() const {
 		return "Log printing is still pending";
 	}
 }
+
 
 void Exit::act(Session& sess) {
 	try {

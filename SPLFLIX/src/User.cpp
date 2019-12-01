@@ -2,7 +2,13 @@
 using namespace std;
 
 
-User::User(const string& _name) : name(_name), history(0) {} //user constructor
+
+User::User(const string& _name) :  history(0), name(_name){} //user constructor
+
+User::~User() {
+		cout << "user delete" << endl;
+	};
+
 
 string User::getName() const {
 	return name;
