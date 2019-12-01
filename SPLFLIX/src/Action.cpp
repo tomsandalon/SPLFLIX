@@ -1,7 +1,6 @@
 #include "../include/Action.h"
 using namespace std;
 BaseAction::~BaseAction() {
-		cout << ": delete" << endl;
 	};
 BaseAction::BaseAction() : errorMsg(""), status(PENDING) {};
 

@@ -40,13 +40,15 @@ void Session::clean() {
 Session::Session(const Session& other): content(other.content), actionsLog(other.actionsLog), userMap(other.userMap) , activeUser(other.activeUser), lastActionInput(other.lastActionInput),  run(other.run)   {
 	copy(other);
 }
+
 Session& Session::operator=(const Session& other){
 		if (&other != this) {
 			clean();
-				copy(other);
+			copy(other);
 		}
 		return *this;
-	}
+}
+
 Session::Session(Session&& other): content(other.content), actionsLog(other.actionsLog), userMap(other.userMap) , activeUser(other.activeUser), lastActionInput(other.lastActionInput),  run(other.run)  {
 	steal(other);
 }
@@ -104,7 +106,6 @@ void Session::steal(Session &other){
 
 
 void Session::start() {
-	cout << "SPLFLIX is now on!"<< endl;
 	run = true;
 
 

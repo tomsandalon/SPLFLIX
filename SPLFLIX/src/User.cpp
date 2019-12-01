@@ -6,7 +6,6 @@ using namespace std;
 User::User(const string& _name) :  history(0), name(_name){} //user constructor
 
 User::~User() {
-		cout << "user delete" << endl;
 	};
 
 
