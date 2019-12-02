@@ -230,10 +230,11 @@ void DuplicateUser::act(Session& sess) {
 		cout << toString() << endl;
 		return;
 	}
-	User* u = sess.getUserByName(oldUser)->clone(sess);
-	u -> setName(newUser);
-	sess.addUserToMap(u);
-
+	if (sess.getUserByName(oldUser) != nullptr) {
+		User* u = sess.getUserByName(oldUser)->clone(sess);
+		u->setName(newUser);
+		sess.addUserToMap(u);
+	}
 	complete();
 	return;
 }
