@@ -5,7 +5,12 @@ using namespace std;
 
 User::User(const string& _name) :  history(0), name(_name){} //user constructor
 
-User::~User() {	};
+User::~User() {
+	/*for (size_t i = 0; i < history.size(); i++){
+	    if( history[i] != nullptr)
+			delete history[i];
+	}*/
+};
 
 
 string User::getName() const {

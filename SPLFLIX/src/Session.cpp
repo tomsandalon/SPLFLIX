@@ -79,7 +79,7 @@ Session& Session :: operator=( Session&& other) {
 
 	lastActionInput = other.lastActionInput;
 
-	activeUser = other.activeUser -> clone(*this);
+	activeUser = userMap[other.activeUser -> getName()];
 }
 
 void Session::steal(Session &other){
@@ -265,7 +265,7 @@ void Session::addUserToMap(User* u) {
 }
 
 void Session::deleteUser(string s) {
-	userMap[s]->~User();
+	delete userMap[s];
 	userMap[s] = nullptr; //apply null pointer
 	userMap.erase(s); //delete the slot in the hash table
 }

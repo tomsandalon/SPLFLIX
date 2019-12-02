@@ -4,8 +4,18 @@ make clean
 make
 
 check memory leak:
-valgrind --leak-check=full --show-reachable=yes bin/splflix config2.json < inp1.txt
+valgrind --leak-check=full --show-reachable=yes bin/splflix config2.json < inp3.txt
 
 
 run progam:
+change in makefile to Main2
+bin/splflix config2.json < inp2.txt
+
+
+make clean
+make
+
+change in makefile to Main
 bin/splflix config2.json < inp1.txt
+bin/splflix config2.json < inp3.txt
+

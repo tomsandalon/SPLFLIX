@@ -8,8 +8,10 @@
 class User;
 
 using namespace std;
-	Watchable::Watchable(long id, int length, const std::vector<std::string>& tags) : id(id), length(length), tags(tags) {}
-    Watchable::Watchable(const Watchable& other) : id(other.id), length(other.length), tags(other.tags) {}
+	Watchable::Watchable(long id, int length, const std::vector<std::string>& tags) : id(id), length(length), tags(tags) {
+	}
+    Watchable::Watchable(const Watchable& other) : id(other.id), length(other.length), tags(other.tags) {
+	}
 
 	Watchable::~Watchable() {
 	}
