@@ -3,10 +3,10 @@ all: spl
 
 # Tool invocations
 # Executable "hello" depends on the files hello.o and run.o.
-spl: bin/Main2.o bin/User.o bin/Watchable.o  bin/Action.o bin/Session.o
+spl: bin/Main.o bin/User.o bin/Watchable.o  bin/Action.o bin/Session.o
 	@echo 'Building target: spl'
 	@echo 'Invoking: C++ Linker'
-	g++ -o bin/splflix bin/Main2.o  bin/User.o bin/Watchable.o  bin/Action.o bin/Session.o
+	g++ -o bin/splflix bin/Main.o  bin/User.o bin/Watchable.o  bin/Action.o bin/Session.o
 	@echo 'Finished building target: spl'
 	@echo ' '
 

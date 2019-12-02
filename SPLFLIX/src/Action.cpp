@@ -126,7 +126,7 @@ void ChangeActiveUser::act(Session& sess) {
 	string userName = getWord(1, sess.getLastActionInput());
 	if (!sess.userExists(userName)) //if the username exists
 	{
-		error("Username not found");
+		error("username does not exist");
 		cout << toString() << endl;
 		return;
 	}
@@ -141,7 +141,7 @@ void ChangeActiveUser::act(Session& sess) {
 string ChangeActiveUser::toString() const {
 	if (getStatus() == ERROR)
 	{
-		return "Change Active User function resulted in an error:\t" + getErrorMsg();
+		return "Error - " + getErrorMsg();
 	}
 	if (getStatus() == COMPLETED)
 	{
@@ -181,7 +181,7 @@ void DeleteUser::act(Session& sess) {
 	else
 	{
 		sess.deleteUser(userName);
-		cout << "Deleted username " << userName << endl;
+		//cout << "Deleted username " << userName << endl;
 		complete();
 		return;
 	}
@@ -216,6 +216,8 @@ void DuplicateUser::act(Session& sess) {
 	}
 	string oldUser = getWord(1, sess.getLastActionInput());
 	string newUser = getWord(2, sess.getLastActionInput());
+
+
 	if (!sess.userExists(oldUser)) //if the old username exists
 	{
 		error("Original username does not exist");
@@ -224,31 +226,19 @@ void DuplicateUser::act(Session& sess) {
 	}
 	if (sess.userExists(newUser)) //if the new username exists
 	{
-		error("New username is already in use");
+		error("username is already in use");
 		cout << toString() << endl;
 		return;
 	}
-	User* u = sess.getUserByName(oldUser)->clone(sess);
-	/**
-	if (sess.getUserAlgoType(oldUser) == "len")
-	{
-		u = new LengthRecommenderUser(newUser);
+
+	if(sess.getUserByName(oldUser) != nullptr) {
+			User* u = sess.getUserByName(oldUser)->clone(sess);
+			u -> setName(newUser);
+			sess.addUserToMap(u);
+			//cout << "Duplicated " << oldUser << " into " << newUser << " successfully" << endl;
 	}
-	else if (sess.getUserAlgoType(oldUser) == "rer")
-	{
-		u = new RerunRecommenderUser(newUser);
-	}
-	else
-	{
-		u = new GenreRecommenderUser(newUser);
-	}
-	//add the same watchables to the new user
-	for (size_t i = 0; i < sess.getUserHistory(oldUser).size(); i++)
-	{
-		u->addWatched(sess.getUserHistory(oldUser)[i]);
-	}**/
-	sess.addUserToMap(u);
-	cout << "Duplicated " << oldUser << " into " << newUser << " successfully" << endl;
+
+	
 	complete();
 	return;
 }

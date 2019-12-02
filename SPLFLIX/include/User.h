@@ -18,6 +18,7 @@ public:
 	virtual ~User();
 	virtual Watchable* getRecommendation(Session& s) = 0;
 	std::string getName() const;
+	void setName(string newName);
 	std::vector<Watchable*> get_history() const;
 	bool already_watched(Watchable*) const;
 	virtual void addWatched(Watchable*) = 0;
@@ -26,7 +27,7 @@ public:
 protected:
 	std::vector<Watchable*> history;
 private:
-	const std::string name;
+	 std::string name;
 };
 
 

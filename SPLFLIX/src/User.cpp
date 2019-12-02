@@ -12,6 +12,10 @@ string User::getName() const {
 	return name;
 };
 
+void User::setName(string newName){
+	name = newName;
+}
+
 vector<Watchable*> User::get_history() const {
 	return history;
 };

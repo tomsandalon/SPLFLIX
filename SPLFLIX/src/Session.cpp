@@ -254,9 +254,10 @@ bool Session::userExists(string userName) const {
 
 User* Session::getUserByName(string userName) const {
 	if (userExists(userName))
-		return nullptr;
-	else
 		return userMap.at(userName);
+	else
+		return nullptr;
+
 }
 
 void Session::addUserToMap(User* u) {

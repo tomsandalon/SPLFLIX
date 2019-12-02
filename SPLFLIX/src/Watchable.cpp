@@ -16,6 +16,7 @@ using namespace std;
 	void Episode::set_Next_Episode(int i){
 		nextEpisodeId = i;
 	}
+
 	int const Watchable::get_length() const{
 		return length;
 	}
