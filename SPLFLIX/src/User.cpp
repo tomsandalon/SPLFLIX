@@ -31,7 +31,7 @@ User* LengthRecommenderUser::clone(const Session& other) {
 	LengthRecommenderUser* cloned = new LengthRecommenderUser(getName());
 	for (size_t i = 0; i < get_history().size(); i++)
 	{
-		cloned->addWatched(other.get_content()[get_history()[i]->get_id()]);
+		cloned->addWatched(other.get_content()[get_history()[i]->get_id()-1]);
 	}
 	return cloned;
 }
@@ -78,7 +78,7 @@ User* RerunRecommenderUser::clone(const Session& other) {
 	RerunRecommenderUser* cloned = new RerunRecommenderUser(getName());
 	for (size_t i = 0; i < get_history().size(); i++)
 	{
-		cloned->addWatched(other.get_content()[get_history()[i]->get_id()]);
+		cloned->addWatched(other.get_content()[get_history()[i]->get_id()-1]);
 	}
 	cloned->setCurrentMovie(getCurrentMovie());
 	return cloned;
