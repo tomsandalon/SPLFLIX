@@ -81,7 +81,7 @@ Watchable* LengthRecommenderUser::getRecommendation(Session& s) {
 
 string LengthRecommenderUser::algoType() const { return "len"; };
 
-RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), currentMovie(0) {};
+RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), currentWatchable(0) {};
 
 User* RerunRecommenderUser::clone(const Session& other) {
 	RerunRecommenderUser* cloned = new RerunRecommenderUser(getName());
@@ -98,11 +98,11 @@ void RerunRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 };
 
 void RerunRecommenderUser::setCurrentMovie(int count) {
-	currentMovie = count;
+	currentWatchable = count;
 }
 
 int RerunRecommenderUser::getCurrentMovie() {
-	return currentMovie;
+	return currentWatchable;
 }
 
 Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
@@ -110,8 +110,8 @@ Watchable* RerunRecommenderUser::getRecommendation(Session& s) {
 	{
 		return nullptr;
 	}
-	Watchable* w = (get_history()[currentMovie % get_history().size()]);
-	currentMovie++;
+	Watchable* w = (get_history()[currentWatchable % get_history().size()]);
+	currentWatchable++;
 	return w;
 };
 

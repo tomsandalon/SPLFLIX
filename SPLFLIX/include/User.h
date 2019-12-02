@@ -52,7 +52,7 @@ public:
 	int getCurrentMovie();
 	virtual User* clone(const Session&);
 private:
-	int currentMovie;
+	int currentWatchable;
 };
 
 class GenreRecommenderUser : public User {
