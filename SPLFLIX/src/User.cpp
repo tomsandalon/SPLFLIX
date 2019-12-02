@@ -112,7 +112,7 @@ User* GenreRecommenderUser::clone(const Session& other) {
 	GenreRecommenderUser* cloned = new GenreRecommenderUser(getName());
 	for (size_t i = 0; i < get_history().size(); i++)
 	{
-		cloned->addWatched(other.get_content()[get_history()[i]->get_id()]);
+		cloned->addWatched(other.get_content()[get_history()[i]->get_id()-1]);
 	}
 	return cloned;
 }
