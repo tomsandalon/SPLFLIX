@@ -17,8 +17,6 @@ Session::Session(const std::string& configFilePath):content({}), actionsLog({}),
 	setJsonData(configFilePath);
 }
 
-
-
 Session::~Session() {
 	clean();
 }
@@ -94,16 +92,6 @@ void Session::steal(Session &other){
 	other.userMap.clear();
 	other.lastActionInput = "";
 }
-
-
-
-
-
-
-
-
-
-
 
 void Session::start() {
 	run = true;
@@ -203,15 +191,12 @@ std::vector<BaseAction*> Session::getActionLog() const {
 }
 
 
-
 void Session::setJsonData(const std::string& configFilePath) {
 	json jsonData;
 
 	std::ifstream watchableFile(configFilePath);
 	watchableFile >> jsonData;
-
-
-
+	
 	int id_count = 1;
 	for (size_t i = 0; i < jsonData["movies"].size(); i++) {
 

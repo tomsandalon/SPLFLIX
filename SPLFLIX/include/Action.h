@@ -77,7 +77,7 @@ public:
 };
 
 
-class Watch : public BaseAction { //this is the only action to be inserted to the action log *before* activation, rather than after activation
+class Watch : public BaseAction {
 public:
 	virtual void act(Session& sess);
 	virtual std::string toString() const;
