@@ -134,15 +134,16 @@ void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 	{
 		found = false;
 		for (size_t j = 0; j < tagCounter.size(); j++)
+		{
 			if (get<1>(tagCounter[j]).compare(w->get_tags()[i]) == 0)
 			{
 				get<0>(tagCounter[j]) += 1;
 				found = true;
 				j = tagCounter.size();
 			}
+		}
 		if (!found)
 		{
-			//tuple<int, string>(1, w->get_tags()[i]);
 			tagCounter.push_back(tuple<int, string>(1, w->get_tags()[i]));
 		}
 	}
@@ -158,7 +159,7 @@ void GenreRecommenderUser::sortTags() {
 		swapped = false;
 		for (size_t j = 0; j < tagCounter.size() - i - 1; j++)
 		{
-			if (get<0>(tagCounter[j]) > get<0>(tagCounter[j + 1])) {
+			if (get<0>(tagCounter[j]) < get<0>(tagCounter[j + 1])) {
 				swap(tagCounter[j], tagCounter[j + 1]);
 				swapped = true;
 			}
