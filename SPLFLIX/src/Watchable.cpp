@@ -56,7 +56,7 @@ using namespace std;
 
 
 		string res = name;
-		if(shortValue){
+		if(shortValue){ //check if the short or long version is required
 			return res;
 		} else {
 			return res + " "  + to_string(get_length())  + " minutes " +"[" + tags + "]";
@@ -102,7 +102,7 @@ using namespace std;
 		else
 			seasonN = "0" + to_string(season);
 		string res =  seriesName + " " + "S" + seasonN + "E" + episodeN;
-		if(shortValue){
+		if(shortValue){ //check if the short or the long version is required
 			return res;
 		} else {
 			return res + " " + to_string(get_length()) + " minutes " + "[" + tags + "]";
@@ -113,7 +113,7 @@ using namespace std;
 
 
 
-	Watchable* Episode::getNextWatchable(Session &s) const {
+	Watchable* Episode::getNextWatchable(Session &s) const { //get the next recommendation only if the next watchable is not the next episode
 		if (nextEpisodeId == -1)
 			return (*s.getActiveUser()).getRecommendation(s);
 		for (size_t i = 0; i <= s.get_content().size(); i++) {

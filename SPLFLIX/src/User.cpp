@@ -36,7 +36,7 @@ bool User::already_watched(Watchable* w) const { //we check if the content was a
 
 LengthRecommenderUser::LengthRecommenderUser(const string& _name) : User(_name) {};
 
-User* LengthRecommenderUser::clone(const Session& other) {
+User* LengthRecommenderUser::clone(const Session& other) { //clone, then add the same movies
 	LengthRecommenderUser* cloned = new LengthRecommenderUser(getName());
 	for (size_t i = 0; i < get_history().size(); i++)
 	{
@@ -83,7 +83,7 @@ string LengthRecommenderUser::algoType() const { return "len"; };
 
 RerunRecommenderUser::RerunRecommenderUser(const string& _name) : User(_name), currentWatchable(0) {};
 
-User* RerunRecommenderUser::clone(const Session& other) {
+User* RerunRecommenderUser::clone(const Session& other) { //clone, then add the watchables to the new user, then set the currentWatchable
 	RerunRecommenderUser* cloned = new RerunRecommenderUser(getName());
 	for (size_t i = 0; i < get_history().size(); i++)
 	{
@@ -142,15 +142,15 @@ void GenreRecommenderUser::addWatched(Watchable* w) { //add to the watchlist
 				j = tagCounter.size();
 			}
 		}
-		if (!found)
+		if (!found) //if it is a new tag
 		{
 			tagCounter.push_back(tuple<int, string>(1, w->get_tags()[i]));
 		}
 	}
-	sortTags();
+	sortTags(); //sort the tag list
 };
 
-void GenreRecommenderUser::sortTags() {
+void GenreRecommenderUser::sortTags() { //bubble sort with two values
 	bool swapped;
 	string a;
 	string b;

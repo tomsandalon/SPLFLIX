@@ -231,9 +231,9 @@ void DuplicateUser::act(Session& sess) {
 		return;
 	}
 	if (sess.getUserByName(oldUser) != nullptr) {
-		User* u = sess.getUserByName(oldUser)->clone(sess);
-		u->setName(newUser);
-		sess.addUserToMap(u);
+		User* u = sess.getUserByName(oldUser)->clone(sess); //clone the user
+		u->setName(newUser); //set a new name
+		sess.addUserToMap(u); //add the user to the user map
 	}
 	complete();
 	return;
@@ -283,7 +283,7 @@ void PrintContentList::act(Session& sess) {
 	}
 	for (size_t i = 0; i < sess.get_content().size(); i++) //print the content
 	{
-		cout << (i + 1) << ". " << sess.get_content()[i]->toString(false)  << endl;
+		cout << (i + 1) << ". " << sess.get_content()[i]->toString(false)  << endl; //print the content list
 	}
 	complete();
 	return;
@@ -430,7 +430,7 @@ BaseAction* Watch::clone() {
 void PrintActionsLog::act(Session& sess) { //print the action log
 	for (size_t i = 0; i < sess.getActionLog().size(); i++)
 	{
-		cout << sess.getActionLog()[i]->toString() << endl;
+		cout << sess.getActionLog()[i]->toString() << endl; 
 		
 	}
 	complete();
@@ -460,7 +460,7 @@ string PrintActionsLog::toString() const {
 
 void Exit::act(Session& sess) {
 	try {
-		sess.setRunToFalse();
+		sess.setRunToFalse(); //set the 'continue running' flag in session to false
 		complete();
 		return;
 	}
